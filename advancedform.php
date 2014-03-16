@@ -24,22 +24,18 @@
  * @return bool
  *
  * @global array               The configuration of the plugins.
- * @global array               The localization of the plugins.
  * @global Monorder_Controller The controller object.
  */
 function advfrm_custom_valid_field($form_name, $field_name, $value)
 {
-    global $plugin_cf, $plugin_tx, $_Monorder;
+    global $plugin_cf, $_Monorder;
 
     if ($field_name == $plugin_cf['monorder']['field_name']) {
-        if ($_Monorder->reserve($_Monorder->currentItem(), $value)) {
-            return true;
-        } else {
-            return $plugin_tx['monorder']['overbooked'];
-        }
+        $result = $_Monorder->reserve($value);
     } else {
-        return true;
+        $result = true;
     }
+    return $result;
 }
 
 /**

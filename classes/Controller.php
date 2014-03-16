@@ -158,7 +158,8 @@ class Monorder_Controller
                 );
             } catch (Exception $ex) {
                 $o .= $this->_views->message(
-                    'fail', sprintf($ptx['message_cant_write'], $item)
+                    'fail',
+                    sprintf($ptx['message_cant_write'], $this->_model->filename())
                 );
             }
         }
@@ -189,7 +190,8 @@ class Monorder_Controller
                 );
             } catch (Exception $x) {
                 $o .= $this->_views->message(
-                    'fail', sprintf($ptx['message_cant_write'], $item)
+                    'fail',
+                    sprintf($ptx['message_cant_write'], $this->_model->filename())
                 );
             }
         }
@@ -236,7 +238,8 @@ class Monorder_Controller
                 );
             } catch (Exception $ex) {
                 $o .= $this->_views->message(
-                    'fail', sprintf($ptx['message_cant_write'], $item)
+                    'fail',
+                    sprintf($ptx['message_cant_write'], $this->_model->filename())
                 );
             }
         }
@@ -302,16 +305,35 @@ class Monorder_Controller
     }
 
     /**
-     * Reserves a certain amount of items and returns whether that succeeded.
+     * Reserves a certain amount of items and returns the result.
      *
-     * @param string $item   An existing item name.
+     * If the reservation succeeded <var>true</var> is returned, otherwise an
+     * error message.
+     *
      * @param int    $amount An amount.
      *
-     * @return bool
+     * @return mixed
      */
-    public function reserve($item, $amount)
+    public function reserve($amount)
     {
-        return $this->_model->reserve($item, $amount);
+        global $plugin_tx;
+
+        $ptx = $plugin_tx['monorder'];
+        try {
+            if ($this->_model->reserve($this->_currentItem, $amount)) {
+                $result = true;
+            } else {
+                $result = $ptx['overbooked'];
+            }
+        } catch (RuntimeException $ex) {
+            if (XH_ADM) {
+                $name = $this->_model->filename();
+            } else {
+                $name = $this->_currentItem;
+            }
+            $result = sprintf($ptx['message_cant_write'], $name);
+        }
+        return $result;
     }
 
     /**
