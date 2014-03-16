@@ -38,6 +38,11 @@ require_once $pth['folder']['plugin_classes'] . 'Views.php';
 require_once $pth['folder']['plugin_classes'] . 'Controller.php';
 
 /**
+ * The plugin version.
+ */
+define('MONORDER_VERSION', '@MONORDER_VERSION@');
+
+/**
  * The controller object.
  *
  * @var Monorder_Controller
