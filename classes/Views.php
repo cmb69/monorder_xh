@@ -26,6 +26,23 @@
 class Monorder_Views
 {
     /**
+     * The model.
+     *
+     * @var Monorder_Model
+     */
+    private $_model;
+
+    /**
+     * Initializes a new instance.
+     *
+     * @param Monorder_Model A model.
+     */
+    public function __construct(Monorder_Model $model)
+    {
+        $this->_model = $model;
+    }
+
+    /**
      * Returns a single list item of the item list view.
      *
      * @param string $item An item name.
@@ -61,17 +78,16 @@ EOT;
      *
      * @return (X)HTML.
      *
-     * @global string         The script name.
-     * @global array          The localization of the plugins.
-     * @global Monorder_Model The model object.
+     * @global string The script name.
+     * @global array  The localization of the plugins.
      */
-    function itemList()
+    public function itemList()
     {
-        global $sn, $plugin_tx, $_Monorder_model;
+        global $sn, $plugin_tx;
 
         $ptx = $plugin_tx['monorder'];
         $action = $sn . '?monorder';
-        $items = $_Monorder_model->items();
+        $items = $this->_model->items();
         $listItems = array();
         foreach ($items as $item => $amount) {
             $listItems[] = $this->itemListItem($item);
@@ -96,21 +112,20 @@ EOT;
      *
      * @return string (X)HTML.
      *
-     * @global string         The script name.
-     * @global array          The localization of the plugins.
-     * @global string         The current monorder tag.
-     * @global Monorder_Model The model object.
+     * @global string The script name.
+     * @global array  The localization of the plugins.
+     * @global string The current monorder tag.
      */
-    function itemForm()
+    public function itemForm()
     {
-        global $sn, $plugin_tx, $_Monorder_tag, $_Monorder_model;
+        global $sn, $plugin_tx, $_Monorder_tag;
 
         $ptx = $plugin_tx['monorder'];
         $item = $_GET['monorder_item'];
         $action = $sn . '?monorder&admin=&action=plugin_textsave&amp;monorder_item='
             . $item;
         $_Monorder_tag = $item;
-        $free = $_Monorder_model->availableAmountOf($item);
+        $free = $this->_model->availableAmountOf($item);
         return <<<EOT
 <h4>$item</h4>
 <form action="$action" method="post">
@@ -128,16 +143,13 @@ EOT;
      *
      * @return string (X)HTML.
      *
-     * @global array          The localization of the plugins.
-     * @global string         The current monorder tag.
-     * @global Monorder_Model The model object.
+     * @global array  The localization of the plugins.
      */
-    function inventory($item)
+    public function inventory($item)
     {
-        global $plugin_tx, $_Monorder_tag, $_Monorder_model;
+        global $plugin_tx;
 
-        //$_Monorder_tag = $item;
-        $free = $_Monorder_model->availableAmountOf($item);
+        $free = $this->_model->availableAmountOf($item);
         if ($free > 0) {
             $suffix = Monorder_numberSuffix($free);
             $result = sprintf($plugin_tx['monorder']["free_$suffix"], $free);
@@ -150,4 +162,3 @@ EOT;
 }
 
 ?>
-

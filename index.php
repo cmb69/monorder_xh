@@ -44,7 +44,7 @@ $_Monorder_model = new Monorder_Model();
  *
  * @var Monorder_Views
  */
-$_Monorder_views = new Monorder_Views();
+$_Monorder_views = new Monorder_Views($_Monorder_model);
 
 /**
  * The current monorder tag.
