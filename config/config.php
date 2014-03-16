@@ -1,3 +1,3 @@
 <?php
 
-$plugin_cf['booking']['field_name']="Teilnehmerzahl";
+$plugin_cf['monorder']['field_name']="Teilnehmerzahl";

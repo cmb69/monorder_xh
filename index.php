@@ -1,10 +1,10 @@
 <?php
 
-$_Booking_tag = null;
+$_Monorder_tag = null;
 
-$_Booking_stream = null;
+$_Monorder_stream = null;
 
-function Booking_numberSuffix($number)
+function Monorder_numberSuffix($number)
 {
     if ($number == 1) {
         $result = 'singular';
@@ -16,35 +16,35 @@ function Booking_numberSuffix($number)
     return $result;
 }
 
-function Booking_dataFolder()
+function Monorder_dataFolder()
 {
     global $pth;
 
-    return $pth['folder']['plugins'] . 'booking/data/';
+    return $pth['folder']['plugins'] . 'monorder/data/';
 }
 
-function Booking_filename()
+function Monorder_filename()
 {
-    global $_Booking_tag;
+    global $_Monorder_tag;
 
-    $filename = Booking_dataFolder() . $_Booking_tag . '.txt';
+    $filename = Monorder_dataFolder() . $_Monorder_tag . '.txt';
     return $filename;
 }
 
-function Booking_free($keepOpen = false)
+function Monorder_free($keepOpen = false)
 {
-    global $_Booking_stream;
+    global $_Monorder_stream;
 
-    $filename = Booking_filename();
+    $filename = Monorder_filename();
     if (is_readable($filename) &&
-        ($_Booking_stream = fopen($filename, 'r')) !== false)
+        ($_Monorder_stream = fopen($filename, 'r')) !== false)
     {
-        flock($_Booking_stream, $keepOpen ? LOCK_EX : LOCK_SH);
-        $contents = stream_get_contents($_Booking_stream);
+        flock($_Monorder_stream, $keepOpen ? LOCK_EX : LOCK_SH);
+        $contents = stream_get_contents($_Monorder_stream);
         if (!$keepOpen) {
-            flock($_Booking_stream, LOCK_UN);
-            fclose($_Booking_stream);
-            $_Booking_stream = null;
+            flock($_Monorder_stream, LOCK_UN);
+            fclose($_Monorder_stream);
+            $_Monorder_stream = null;
         }
         $free = (int) trim($contents);
     } else {
@@ -53,58 +53,58 @@ function Booking_free($keepOpen = false)
     return $free;
 }
 
-function Booking_write($free)
+function Monorder_write($free)
 {
-    global $_Booking_stream;
+    global $_Monorder_stream;
 
     $result = false;
-    $filename = Booking_filename();
-    if (!isset($_Booking_stream)
-        && ($_Booking_stream = fopen($filename, 'a+')) !== false)
+    $filename = Monorder_filename();
+    if (!isset($_Monorder_stream)
+        && ($_Monorder_stream = fopen($filename, 'a+')) !== false)
     {
-        flock($_Booking_stream, LOCK_EX);
-        fseek($_Booking_stream, 0);
-        ftruncate($_Booking_stream, 0);
+        flock($_Monorder_stream, LOCK_EX);
+        fseek($_Monorder_stream, 0);
+        ftruncate($_Monorder_stream, 0);
     }
-    if ($_Booking_stream) {
-        $result = (bool) fwrite($_Booking_stream, $free);
-        flock($_Booking_stream, LOCK_UN);
-        fclose($_Booking_stream);
-        $_Booking_stream = null;
+    if ($_Monorder_stream) {
+        $result = (bool) fwrite($_Monorder_stream, $free);
+        flock($_Monorder_stream, LOCK_UN);
+        fclose($_Monorder_stream);
+        $_Monorder_stream = null;
     }
     return $result;
 }
 
-function bookingfree($tag)
+function monorderfree($tag)
 {
-    global $plugin_tx, $_Booking_tag;
+    global $plugin_tx, $_Monorder_tag;
 
-    $_Booking_tag = $tag;
-    $free = Booking_free();
+    $_Monorder_tag = $tag;
+    $free = Monorder_free();
     if ($free > 0) {
-        $suffix = Booking_numberSuffix($free);
-        $result = sprintf($plugin_tx['booking']["free_$suffix"], $free);
+        $suffix = Monorder_numberSuffix($free);
+        $result = sprintf($plugin_tx['monorder']["free_$suffix"], $free);
     } else {
-        $result = $plugin_tx['booking']['booked_out'];
+        $result = $plugin_tx['monorder']['booked_out'];
     }
     return $result;
 }
 
-function bookingform($formName, $tag)
+function monorderform($formName, $tag)
 {
-    global $pth, $plugin_tx, $_Booking_tag;
+    global $pth, $plugin_tx, $_Monorder_tag;
 
-    $ptx = $plugin_tx['booking'];
+    $ptx = $plugin_tx['monorder'];
     if (!preg_match('/^[a-z0-9-]+$/', $tag)) {
         return sprintf($ptx['invalid_tag'], $tag);
     }
-    $_Booking_tag = $tag;
-    if (($free1 = Booking_free()) > 0) {
-        include_once $pth['folder']['plugins'] . 'booking/advancedform.php';
+    $_Monorder_tag = $tag;
+    if (($free1 = Monorder_free()) > 0) {
+        include_once $pth['folder']['plugins'] . 'monorder/advancedform.php';
         $o = advancedform($formName);
-        $free2 = Booking_free();
+        $free2 = monorder_free();
         if ($free2 == $free1) {
-            $o = bookingfree($tag) . $o;
+            $o = monorderfree($tag) . $o;
         }
         return $o;
     } else {

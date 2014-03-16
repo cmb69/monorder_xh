@@ -5,14 +5,14 @@
  */
 function advfrm_custom_valid_field($form_name, $field_name, $value)
 {
-    global $plugin_cf, $plugin_tx, $_Booking_tag;
+    global $plugin_cf, $plugin_tx, $_Monorder_tag;
 
-    if ($field_name == $plugin_cf['booking']['field_name']) {
-        $free = Booking_free();
+    if ($field_name == $plugin_cf['monorder']['field_name']) {
+        $free = Monorder_free();
         if ($free >= $value) {
             return true;
         } else {
-            return $plugin_tx['booking']['overbooked'];
+            return $plugin_tx['monorder']['overbooked'];
         }
     } else {
         return true;
@@ -26,12 +26,12 @@ function advfrm_custom_mail($form_name, &$mail, $is_confirmation)
 {
     global $plugin_cf;
 
-    $fieldname = 'advfrm-' . $plugin_cf['booking']['field_name'];
+    $fieldname = 'advfrm-' . $plugin_cf['monorder']['field_name'];
 
     if (!$is_confirmation) {
-        $free = Booking_free();
+        $free = Monorder_free();
         $current = (int) stsl($_POST[$fieldname]);
         $free -= $current;
-        Booking_write($free);
+        Monorder_write($free);
     }
 }
