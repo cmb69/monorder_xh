@@ -28,6 +28,15 @@ class ModelTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('plural', $this->_subject->number(5));
     }
 
+    public function testLogoPath()
+    {
+        global $pth;
+
+        $expected = $pth['folder']['plugins'] . 'monorder/monorder.png';
+        $actual = $this->_subject->logoPath();
+        $this->assertEquals($expected, $actual);
+    }
+
     public function testCorrectFilename()
     {
         global $pth;

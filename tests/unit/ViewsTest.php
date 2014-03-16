@@ -17,6 +17,70 @@ class ViewsTest extends PHPUnit_Framework_TestCase
         $this->_subject = new Monorder_Views($this->_model);
     }
 
+    public function dataForMessage()
+    {
+        return array(
+            array('success', ''),
+            array('info', ''),
+            array('warning', 'cmsimplecore_warning'),
+            array('fail', 'cmsimplecore_warning')
+        );
+    }
+
+    /**
+     * @dataProvider dataForMessage
+     */
+    public function testMessage($type, $class)
+    {
+        $message = 'foo bar';
+        $matcher = array(
+            'tag' => 'p',
+            'attributes' => array('class' => $class),
+            'content' => $message
+        );
+        $actual = $this->_subject->message($type, $message);
+        $this->assertTag($matcher, $actual);
+    }
+
+    public function testSystemCheck()
+    {
+        $checks = array('everything' => 'ok');
+        $matcher = array(
+            'tag' => 'ul',
+            'children' => array(
+                'count' => 1,
+                'only' => array('tag' => 'li')
+            )
+        );
+        $actual = $this->_subject->systemCheck($checks);
+        $this->assertTag($matcher, $actual);
+    }
+
+    public function testAboutShowsVersionInfo()
+    {
+        define('MONORDER_VERSION', 'foobar');
+        $matcher = array('tag' => 'p', 'content' => 'Version: foobar');
+        $actual = $this->_subject->about();
+        $this->assertTag($matcher, $actual);
+        runkit_constant_remove('MONORDER_VERSION');
+    }
+
+    public function testAboutShowsPluginIcon()
+    {
+        define('MONORDER_VERSION', 'foobar');
+        $this->_model->expects($this->once())
+            ->method('logoPath')
+            ->will($this->returnValue('foobar'));
+        $icon = 'icon.png';
+        $matcher = array(
+            'tag' => 'img',
+            'attributes' => array('src' => 'foobar')
+        );
+        $actual = $this->_subject->about();
+        $this->assertTag($matcher, $actual);
+        runkit_constant_remove('MONORDER_VERSION');
+    }
+
     public function testItemListHasCorrectNumberOfListItems()
     {
         $matcher = array(
