@@ -23,6 +23,18 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
 }
 
 /**
+ * The model class.
+ */
+require_once $pth['folder']['plugin_classes'] . 'Model.php';
+
+/**
+ * The model object.
+ *
+ * @var Monorder_Model.
+ */
+$_Monorder_model = new Monorder_Model();
+
+/**
  * The current monorder tag.
  *
  * @var string
@@ -56,112 +68,22 @@ function Monorder_numberSuffix($number)
 }
 
 /**
- * Returns the path of the data folder.
- *
- * @return string
- *
- * @global array The paths of system files and folders.
- */
-function Monorder_dataFolder()
-{
-    global $pth;
-
-    return $pth['folder']['plugins'] . 'monorder/data/';
-}
-
-/**
- * Returns the path of the current data file.
- *
- * @return string
- *
- * @global string The current monorder tag.
- */
-function Monorder_filename()
-{
-    global $_Monorder_tag;
-
-    $filename = Monorder_dataFolder() . $_Monorder_tag . '.txt';
-    return $filename;
-}
-
-/**
- * Returns the amount of available items for the current tag.
- *
- * @param bool $keepOpen Whether to keep the file handle open.
- *
- * @return int
- *
- * @global resource The current monorder stream.
- */
-function Monorder_free($keepOpen = false)
-{
-    global $_Monorder_stream;
-
-    $filename = Monorder_filename();
-    if (is_readable($filename)
-        && ($_Monorder_stream = fopen($filename, 'r')) !== false
-    ) {
-        flock($_Monorder_stream, $keepOpen ? LOCK_EX : LOCK_SH);
-        $contents = stream_get_contents($_Monorder_stream);
-        if (!$keepOpen) {
-            flock($_Monorder_stream, LOCK_UN);
-            fclose($_Monorder_stream);
-            $_Monorder_stream = null;
-        }
-        $free = (int) trim($contents);
-    } else {
-        $free = 0;
-    }
-    return $free;
-}
-
-/**
- * Stores the amount of available items for the current tag.
- *
- * @param int $free An amount.
- *
- * @return void
- *
- * @global resource The current monorder stream.
- */
-function Monorder_write($free)
-{
-    global $_Monorder_stream;
-
-    $result = false;
-    $filename = Monorder_filename();
-    if (!isset($_Monorder_stream)
-        && ($_Monorder_stream = fopen($filename, 'a+')) !== false
-    ) {
-        flock($_Monorder_stream, LOCK_EX);
-        fseek($_Monorder_stream, 0);
-        ftruncate($_Monorder_stream, 0);
-    }
-    if ($_Monorder_stream) {
-        $result = (bool) fwrite($_Monorder_stream, $free);
-        flock($_Monorder_stream, LOCK_UN);
-        fclose($_Monorder_stream);
-        $_Monorder_stream = null;
-    }
-    return $result;
-}
-
-/**
  * Returns an available items view.
  *
  * @param string $tag A tag name.
  *
  * @return string (X)HTML.
  *
- * @global array The localization of the plugins.
- * @global string The current monorder tag.
+ * @global array          The localization of the plugins.
+ * @global string         The current monorder tag.
+ * @global Monorder_Model The model object.
  */
 function monorderfree($tag)
 {
-    global $plugin_tx, $_Monorder_tag;
+    global $plugin_tx, $_Monorder_tag, $_Monorder_model;
 
     $_Monorder_tag = $tag;
-    $free = Monorder_free();
+    $free = $_Monorder_model->availableAmountOf($tag);
     if ($free > 0) {
         $suffix = Monorder_numberSuffix($free);
         $result = sprintf($plugin_tx['monorder']["free_$suffix"], $free);
@@ -179,23 +101,25 @@ function monorderfree($tag)
  *
  * @return string (X)HTML.
  *
- * @global array  The paths of system files and folders.
- * @global array  The localization of the plugins.
- * @global string The current monorder tag.
+ * @global array          The paths of system files and folders.
+ * @global array          The localization of the plugins.
+ * @global string         The current monorder tag.
+ * @global Monorder_Model The model object.
  */
 function monorderform($formName, $tag)
 {
-    global $pth, $plugin_tx, $_Monorder_tag;
+    global $pth, $plugin_tx, $_Monorder_tag, $_Monorder_model;
 
     $ptx = $plugin_tx['monorder'];
     if (!preg_match('/^[a-z0-9-]+$/', $tag)) {
         return sprintf($ptx['invalid_tag'], $tag);
     }
     $_Monorder_tag = $tag;
-    if (($free1 = Monorder_free()) > 0) {
+    if (($free1 = $_Monorder_model->availableAmountOf($tag)) > 0) {
         include_once $pth['folder']['plugins'] . 'monorder/advancedform.php';
         $o = advancedform($formName);
-        $free2 = monorder_free();
+        $_Monorder_model->clearCache();
+        $free2 = $_Monorder_model->availableAmountOf($tag);
         if ($free2 == $free1) {
             $o = monorderfree($tag) . $o;
         }

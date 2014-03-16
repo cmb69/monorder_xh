@@ -23,25 +23,6 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
 }
 
 /**
- * Returns the existing data files.
- *
- * @return array
- */
-function Monorder_files()
-{
-    $result = array();
-    $dir = opendir(Monorder_dataFolder());
-    if ($dir) {
-        while (($entry = readdir($dir)) !== false) {
-            if ($entry[0] != '.' && pathinfo($entry, PATHINFO_EXTENSION) == 'txt') {
-                $result[] = basename($entry, '.txt');
-            }
-        }
-    }
-    return $result;
-}
-
-/**
  * Returns a list item of the file list.
  *
  * @param string $file A file name.
@@ -77,16 +58,17 @@ EOT;
  *
  * @return (X)HTML.
  *
- * @global string The script name.
- * @global array  The localization of the plugins.
+ * @global string         The script name.
+ * @global array          The localization of the plugins.
+ * @global Monorder_Model The model object.
  */
 function Monorder_fileList()
 {
-    global $sn, $plugin_tx;
+    global $sn, $plugin_tx, $_Monorder_model;
 
     $ptx = $plugin_tx['monorder'];
     $action = $sn . '?monorder';
-    $files = Monorder_files();
+    $files = array_keys($_Monorder_model->items());
     $listItems = array();
     foreach ($files as $file) {
         $listItems[] = Monorder_fileListItem($file);
@@ -111,20 +93,21 @@ EOT;
  *
  * @return string (X)HTML.
  *
- * @global string The script name.
- * @global array  The localization of the plugins.
- * @global string The current monorder tag. *
+ * @global string         The script name.
+ * @global array          The localization of the plugins.
+ * @global string         The current monorder tag.
+ * @global Monorder_Model The model object.
  */
 function Monorder_form()
 {
-    global $sn, $plugin_tx, $_Monorder_tag;
+    global $sn, $plugin_tx, $_Monorder_tag, $_Monorder_model;
 
     $ptx = $plugin_tx['monorder'];
     $file = $_GET['monorder_file'];
     $action = $sn . '?monorder&admin=&action=plugin_textsave&amp;monorder_file='
         . $file;
     $_Monorder_tag = $file;
-    $free = Monorder_free();
+    $free = $_Monorder_model->availableAmountOf($file);
     return <<<EOT
 <h4>$file</h4>
 <form action="$action" method="post">
@@ -140,20 +123,22 @@ EOT;
  *
  * @return string (X)HTML.
  *
- * @global array  The localization of the plugins.
- * @global string The current monorder tag.
+ * @global array          The localization of the plugins.
+ * @global string         The current monorder tag.
+ * @global Monorder_Model The model object.
  */
 function Monorder_newEvent()
 {
-    global $plugin_tx, $_Monorder_tag;
+    global $plugin_tx, $_Monorder_tag, $_Monorder_model;
 
     $o = '';
     if (isset($_POST['monorder_file'])) {
         $_Monorder_tag = $_POST['monorder_file'];
-        if (Monorder_write(0)) {
+        try {
+            $_Monorder_model->setItemAmount($_Monorder_tag, 0);
             $o .= '<p>' . $plugin_tx['monorder']['successfully_saved'] . '</p>';
-        } else {
-            e('cntwriteto', 'file', Monorder_filename());
+        } catch (Exception $x) {
+            e('cntwriteto', 'file', $_Monorder_model->filename());
         }
     }
     $o .= Monorder_fileList();
@@ -165,20 +150,21 @@ function Monorder_newEvent()
  *
  * @return string (X)HTML.
  *
- * @global array  The localization of the plugins.
- * @global string The current monorder tag.
+ * @global array          The localization of the plugins.
+ * @global string         The current monorder tag.
+ * @global Monorder_Model The model object.
  */
 function Monorder_deleteEvent()
 {
-    global $plugin_tx, $_Monorder_tag;
+    global $plugin_tx, $_Monorder_tag, $_Monorder_model;
 
     $o = '';
     if (isset($_POST['monorder_file'])) {
         $_Monorder_tag = $_POST['monorder_file'];
-        $filename = Monorder_filename();
-        if (unlink($filename)) {
+        try {
+            $_Monorder_model->removeItem($_Monorder_tag);
             $o .= '<p>' . $plugin_tx['monorder']['successfully_deleted'] . '</p>';
-        } else {
+        } catch (Exception $x) {
             e('cntdelete', 'file', $filename);
         }
     }
@@ -191,21 +177,23 @@ function Monorder_deleteEvent()
  *
  * @return string (X)HTML.
  *
- * @global array  The localization of the plugins.
- * @global string The current monorder tag.
+ * @global array          The localization of the plugins.
+ * @global string         The current monorder tag.
+ * @global Monorder_Model The model object.
  */
 function Monorder_save()
 {
-    global $plugin_tx, $_Monorder_tag;
+    global $plugin_tx, $_Monorder_tag, $_Monorder_model;
 
     $o = '';
     $_Monorder_tag = $_GET['monorder_file'];
     if (isset($_POST['monorder_free'])) {
         $free = stsl($_POST['monorder_free']);
-        if (Monorder_write($free)) {
+        try {
+            $_Monorder_model->setItemAmount($_Monorder_tag, $free);
             $o .= '<p>' . $plugin_tx['monorder']['successfully_saved'] . '</p>';
-        } else {
-            e('cntwriteto', 'file', Monorder_filename());
+        } catch (Exception $ex) {
+            e('cntwriteto', 'file', $_Monorder_model->filename());
         }
     }
     $o .= Monorder_form();

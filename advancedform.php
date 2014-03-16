@@ -23,17 +23,17 @@
  *
  * @return bool
  *
- * @global array  The configuration of the plugins.
- * @global array  The localization of the plugins.
- * @global string The current monorder tag.
+ * @global array          The configuration of the plugins.
+ * @global array          The localization of the plugins.
+ * @global string         The current monorder tag.
+ * @global Monorder_Model The model object.
  */
 function advfrm_custom_valid_field($form_name, $field_name, $value)
 {
-    global $plugin_cf, $plugin_tx, $_Monorder_tag;
+    global $plugin_cf, $plugin_tx, $_Monorder_tag, $_Monorder_model;
 
     if ($field_name == $plugin_cf['monorder']['field_name']) {
-        $free = Monorder_free();
-        if ($free >= $value) {
+        if ($_Monorder_model->reserve($_Monorder_tag, $value)) {
             return true;
         } else {
             return $plugin_tx['monorder']['overbooked'];
@@ -52,19 +52,17 @@ function advfrm_custom_valid_field($form_name, $field_name, $value)
  *
  * @return void
  *
- * @global array The configuration of the plugins.
+ * @global array          The configuration of the plugins.
+ * @global Monorder_Model The model object.
  */
 function advfrm_custom_mail($form_name, &$mail, $is_confirmation)
 {
-    global $plugin_cf;
+    global $plugin_cf, $_Monorder_model;
 
     $fieldname = 'advfrm-' . $plugin_cf['monorder']['field_name'];
 
     if (!$is_confirmation) {
-        $free = Monorder_free();
-        $current = (int) stsl($_POST[$fieldname]);
-        $free -= $current;
-        Monorder_write($free);
+        $_Monorder_model->commitReservation();
     }
 }
 
