@@ -32,4 +32,20 @@ class ViewsTest extends PHPUnit_Framework_TestCase
         $actual = $this->_subject->itemList();
         $this->assertTag($matcher, $actual);
     }
+
+    public function testInventoryShowsAvailableAmount()
+    {
+        global $plugin_tx;
+
+        $expected = 42;
+        $plugin_tx['monorder']['free_plural'] = '%d';
+        $this->_model->expects($this->once())
+            ->method('availableAmountOf')
+            ->will($this->returnValue($expected));
+        $this->_model->expects($this->once())
+            ->method('number')
+            ->will($this->returnValue('plural'));
+        $actual = $this->_subject->inventory('foo');
+        $this->assertEquals($expected, $actual);
+    }
 }

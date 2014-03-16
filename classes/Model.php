@@ -64,6 +64,25 @@ class Monorder_Model
     }
 
     /**
+     * Returns the number.
+     *
+     * @param int $amount An amount.
+     *
+     * @return string
+     */
+    function number($amount)
+    {
+        if ($amount == 1) {
+            $result = 'singular';
+        } elseif ($amount >= 2 && $amount <= 4) {
+            $result = 'paucal';
+        } else {
+            $result = 'plural';
+        }
+        return $result;
+    }
+
+    /**
      * Returns the path of the data file.
      *
      * @return string

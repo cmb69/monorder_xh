@@ -151,7 +151,7 @@ EOT;
 
         $free = $this->_model->availableAmountOf($item);
         if ($free > 0) {
-            $suffix = Monorder_numberSuffix($free);
+            $suffix = $this->_model->number($free);
             $result = sprintf($plugin_tx['monorder']["free_$suffix"], $free);
         } else {
             $result = $plugin_tx['monorder']['booked_out'];

@@ -61,25 +61,6 @@ $_Monorder_tag = null;
 $_Monorder_stream = null;
 
 /**
- * Returns the number.
- *
- * @param int $number An amount.
- *
- * @return string
- */
-function Monorder_numberSuffix($number)
-{
-    if ($number == 1) {
-        $result = 'singular';
-    } elseif ($number >= 2 && $number <= 4) {
-        $result = 'paucal';
-    } else {
-        $result = 'plural';
-    }
-    return $result;
-}
-
-/**
  * Returns an available items view.
  *
  * @param string $tag A tag name.

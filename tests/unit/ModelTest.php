@@ -19,6 +19,15 @@ class ModelTest extends PHPUnit_Framework_TestCase
         $this->_subject = new Monorder_Model();
     }
 
+    public function testNumber()
+    {
+        $this->assertEquals('plural', $this->_subject->number(0));
+        $this->assertEquals('singular', $this->_subject->number(1));
+        $this->assertEquals('paucal', $this->_subject->number(2));
+        $this->assertEquals('paucal', $this->_subject->number(4));
+        $this->assertEquals('plural', $this->_subject->number(5));
+    }
+
     public function testCorrectFilename()
     {
         global $pth;
