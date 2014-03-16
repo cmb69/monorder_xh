@@ -29,7 +29,7 @@ class ViewsTest extends PHPUnit_Framework_TestCase
         $this->_model->expects($this->once())
             ->method('items')
             ->will($this->returnValue(array('foo', 'bar')));
-        $actual = $this->_subject->itemList();
+        $actual = $this->_subject->itemList('/');
         $this->assertTag($matcher, $actual);
     }
 
@@ -39,7 +39,7 @@ class ViewsTest extends PHPUnit_Framework_TestCase
         $this->_model->expects($this->once())
             ->method('availableAmountOf')
             ->will($this->returnValue(42));
-        $actual = $this->_subject->itemForm('foo');
+        $actual = $this->_subject->itemForm('foo', '/');
         $this->assertTag($matcher, $actual);
     }
 

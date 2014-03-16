@@ -101,6 +101,13 @@ class Monorder_Views
 EOT;
     }
 
+    /**
+     * Returns an administration heading.
+     *
+     * @param string $title A title.
+     *
+     * @return string (X)HTML.
+     */
     public function administrationHeading($title)
     {
         return <<<EOS
