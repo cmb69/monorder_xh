@@ -22,8 +22,6 @@
  * @author   Christoph M. Becker <cmbecker69@gmx.de>
  * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
  * @link     http://3-magi.net/?CMSimple_XH/Monorder_XH
- *
- * @todo handle fopen() failures
  */
 class Monorder_Model
 {
@@ -118,12 +116,16 @@ class Monorder_Model
             mkdir($foldername, 0777, true);
         }
         $stream = fopen($this->_filename, 'a');
-        flock($stream, LOCK_EX);
-        fseek($stream, 0);
-        ftruncate($stream, 0);
-        fwrite($stream, serialize(array()));
-        flock($stream, LOCK_UN);
-        fclose($stream);
+        if ($stream) {
+            flock($stream, LOCK_EX);
+            fseek($stream, 0);
+            ftruncate($stream, 0);
+            fwrite($stream, serialize(array()));
+            flock($stream, LOCK_UN);
+            fclose($stream);
+        } else {
+            throw new RuntimeException("Can't write {$this->_filename}", 2);
+        }
     }
 
     /**
@@ -145,10 +147,14 @@ class Monorder_Model
     {
         if (!isset($this->_items)) {
             $stream = fopen($this->_filename, 'r');
-            flock($stream, LOCK_SH);
-            $this->_items = unserialize(stream_get_contents($stream));
-            flock($stream, LOCK_UN);
-            fclose($stream);
+            if ($stream) {
+                flock($stream, LOCK_SH);
+                $this->_items = unserialize(stream_get_contents($stream));
+                flock($stream, LOCK_UN);
+                fclose($stream);
+            } else {
+                throw new RuntimeException("Can't read {$this->_filename}", 1);
+            }
         }
         return $this->_items;
     }
@@ -203,14 +209,18 @@ class Monorder_Model
     protected function modify($modifier)
     {
         $stream = fopen($this->_filename, 'r+');
-        flock($stream, LOCK_EX);
-        $this->_items = unserialize(stream_get_contents($stream));
-        $modifier();
-        fseek($stream, 0);
-        ftruncate($stream, 0);
-        fwrite($stream, serialize($this->_items));
-        flock($stream, LOCK_UN);
-        fclose($stream);
+        if ($stream) {
+            flock($stream, LOCK_EX);
+            $this->_items = unserialize(stream_get_contents($stream));
+            $modifier();
+            fseek($stream, 0);
+            ftruncate($stream, 0);
+            fwrite($stream, serialize($this->_items));
+            flock($stream, LOCK_UN);
+            fclose($stream);
+        } else {
+            throw new RuntimeException("Can't write {$this->_filename}", 2);
+        }
     }
 
     /**
@@ -277,17 +287,21 @@ class Monorder_Model
         assert($this->hasItem($item));
         assert($amount > 0);
 
+        $result = false;
         $this->_stream = fopen($this->_filename, 'r+');
-        flock($this->_stream, LOCK_EX);
-        $this->_items = unserialize(stream_get_contents($this->_stream));
-        if ($amount <= $this->_items[$item]) {
-            $result = true;
-            $this->_items[$item] -= $amount;
+        if ($this->_stream) {
+            flock($this->_stream, LOCK_EX);
+            $this->_items = unserialize(stream_get_contents($this->_stream));
+            if ($amount <= $this->_items[$item]) {
+                $this->_items[$item] -= $amount;
+                $result = true;
+            } else {
+                flock($this->_stream, LOCK_UN);
+                fclose($this->_stream);
+                $this->_stream = null;
+            }
         } else {
-            $result = false;
-            flock($this->_stream, LOCK_UN);
-            fclose($this->_stream);
-            $this->_stream = null;
+            throw new RuntimeException("Can't write {$this->_filename}", 2);
         }
         return $result;
     }
