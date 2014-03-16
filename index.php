@@ -28,11 +28,23 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
 require_once $pth['folder']['plugin_classes'] . 'Model.php';
 
 /**
+ * The views class.
+ */
+require_once $pth['folder']['plugin_classes'] . 'Views.php';
+
+/**
  * The model object.
  *
- * @var Monorder_Model.
+ * @var Monorder_Model
  */
 $_Monorder_model = new Monorder_Model();
+
+/**
+ * The views object.
+ *
+ * @var Monorder_Views
+ */
+$_Monorder_views = new Monorder_Views();
 
 /**
  * The current monorder tag.
@@ -74,23 +86,13 @@ function Monorder_numberSuffix($number)
  *
  * @return string (X)HTML.
  *
- * @global array          The localization of the plugins.
- * @global string         The current monorder tag.
- * @global Monorder_Model The model object.
+ * @global Monorder_Views The views object.
  */
 function monorderfree($tag)
 {
-    global $plugin_tx, $_Monorder_tag, $_Monorder_model;
+    global $_Monorder_views;
 
-    $_Monorder_tag = $tag;
-    $free = $_Monorder_model->availableAmountOf($tag);
-    if ($free > 0) {
-        $suffix = Monorder_numberSuffix($free);
-        $result = sprintf($plugin_tx['monorder']["free_$suffix"], $free);
-    } else {
-        $result = $plugin_tx['monorder']['booked_out'];
-    }
-    return $result;
+    return $_Monorder_views->inventory($tag);
 }
 
 /**
@@ -105,10 +107,11 @@ function monorderfree($tag)
  * @global array          The localization of the plugins.
  * @global string         The current monorder tag.
  * @global Monorder_Model The model object.
+ * @global Monorder_Views The views object.
  */
 function monorderform($formName, $tag)
 {
-    global $pth, $plugin_tx, $_Monorder_tag, $_Monorder_model;
+    global $pth, $plugin_tx, $_Monorder_tag, $_Monorder_model, $_Monorder_views;
 
     $ptx = $plugin_tx['monorder'];
     if (!preg_match('/^[a-z0-9-]+$/', $tag)) {
@@ -121,7 +124,7 @@ function monorderform($formName, $tag)
         $_Monorder_model->clearCache();
         $free2 = $_Monorder_model->availableAmountOf($tag);
         if ($free2 == $free1) {
-            $o = monorderfree($tag) . $o;
+            $o = $_Monorder_views->inventory($tag) . $o;
         }
         return $o;
     } else {
