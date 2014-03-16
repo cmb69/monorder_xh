@@ -128,9 +128,11 @@ class Monorder_Controller
      */
     protected function items()
     {
-        global $sn;
+        global $sn, $plugin_tx;
 
-        return $this->_views->itemList($sn);
+        $ptx = $plugin_tx['monorder'];
+        return $this->_views->administrationHeading($ptx['events'])
+            . $this->_views->itemList($sn);
     }
 
     /**
@@ -145,14 +147,19 @@ class Monorder_Controller
     {
         global $sn, $plugin_tx;
 
-        $o = '';
+        $ptx = $plugin_tx['monorder'];
+        $o = $this->_views->administrationHeading($ptx['events']);
         if (isset($_POST['monorder_item'])) {
             $item = stsl($_POST['monorder_item']); // TODO sanitize
             try {
                 $this->_model->setItemAmount($item, 0);
-                $o .= '<p>' . $plugin_tx['monorder']['successfully_saved'] . '</p>';
-            } catch (Exception $x) {
-                e('cntwriteto', 'file', $this->_model->filename());
+                $o .= $this->_views->message(
+                    'success', sprintf($ptx['message_saved'], $item)
+                );
+            } catch (Exception $ex) {
+                $o .= $this->_views->message(
+                    'fail', sprintf($ptx['message_cant_write'], $item)
+                );
             }
         }
         $o .= $this->_views->itemList($sn);
@@ -171,15 +178,19 @@ class Monorder_Controller
     {
         global $sn, $plugin_tx;
 
-        $o = '';
+        $ptx = $plugin_tx['monorder'];
+        $o = $this->_views->administrationHeading($ptx['events']);
         if (isset($_POST['monorder_item'])) {
             $item = stsl($_POST['monorder_item']); // TODO sanitize
             try {
                 $this->_model->removeItem($item);
-                $o .= '<p>' . $plugin_tx['monorder']['successfully_deleted']
-                    . '</p>';
+                $o .= $this->_views->message(
+                    'success', sprintf($ptx['message_deleted'], $item)
+                );
             } catch (Exception $x) {
-                e('cntdelete', 'file', $filename);
+                $o .= $this->_views->message(
+                    'fail', sprintf($ptx['message_cant_write'], $item)
+                );
             }
         }
         $o .= $this->_views->itemList($sn);
@@ -213,18 +224,23 @@ class Monorder_Controller
     {
         global $sn, $plugin_tx;
 
-        $o = '';
+        $ptx = $plugin_tx['monorder'];
+        $o = $this->_views->administrationHeading($ptx['events']);
         $item = stsl($_GET['monorder_item']); // TODO sanitize
         if (isset($_POST['monorder_free'])) {
             $amount = stsl($_POST['monorder_free']);
             try {
                 $this->_model->setItemAmount($item, $amount);
-                $o .= '<p>' . $plugin_tx['monorder']['successfully_saved'] . '</p>';
+                $o .= $this->_views->message(
+                    'success', sprintf($ptx['message_saved'], $item)
+                );
             } catch (Exception $ex) {
-                e('cntwriteto', 'file', $this->_model->filename());
+                $o .= $this->_views->message(
+                    'fail', sprintf($ptx['message_cant_write'], $item)
+                );
             }
         }
-        $o .= $this->_views->itemForm($item, $sn);
+        $o .= $this->_views->itemList($sn);
         return $o;
     }
 

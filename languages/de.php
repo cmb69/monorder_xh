@@ -5,8 +5,12 @@ $plugin_tx['monorder']['menu_main']="Posten";
 $plugin_tx['monorder']['booked_out']="<p>Leider bereits ausgebucht!</p>";
 $plugin_tx['monorder']['free']="Freie Plätze:";
 $plugin_tx['monorder']['save']="Speichern";
-$plugin_tx['monorder']['successfully_saved']="Erfolgreich gespeichert.";
-$plugin_tx['monorder']['successfully_deleted']="Erfolgreich gelöscht.";
+
+$plugin_tx['monorder']['message_saved']="\"%s\" wurde erfolgreich gespeichert.";
+$plugin_tx['monorder']['message_deleted']="\"%s\" wurde erfolgreich gelöscht.";
+$plugin_tx['monorder']['message_cant_read']="\"%s\" konnte nicht gelesen werden.";
+$plugin_tx['monorder']['message_cant_write']="\"%s\" konnte nicht geschrieben werden.";
+
 $plugin_tx['monorder']['overbooked']="So viele Plaetze sind nicht mehr frei!";
 $plugin_tx['monorder']['events']="Veranstaltungen";
 $plugin_tx['monorder']['invalid_tag']="Ungültiger Veranstaltungsname: '%s' (darf nur Kleinbuchstaben, Ziffern und Bindestriche enthalten)";

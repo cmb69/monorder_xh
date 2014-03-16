@@ -62,6 +62,26 @@ class Monorder_Views
     }
 
     /**
+     * Returns a message.
+     *
+     * @param string $type    A message type ('success', 'info', 'warning', 'fail').
+     * @param string $message A message.
+     *
+     * @return string (X)HTML.
+     */
+    public function message($type, $message)
+    {
+        if (function_exists('XH_message')) {
+            return XH_message($type, $message);
+        } else {
+            $class = in_array($type, array('warning', 'fail'))
+                ? 'cmsimplecore_warning'
+                : '';
+            return '<p class="' . $class . '">' . $message . '</p>';
+        }
+    }
+
+    /**
      * Returns a single system check list item.
      *
      * @param string $check A label.
@@ -79,6 +99,13 @@ class Monorder_Views
         return <<<EOT
 <li><img src="$imageFolder$state.png" alt="$state" /> $check</li>
 EOT;
+    }
+
+    public function administrationHeading($title)
+    {
+        return <<<EOS
+<h1>Monorder &ndash; $title</h1>
+EOS;
     }
 
     /**
@@ -216,7 +243,6 @@ EOT;
         }
         $listItems = implode('', $listItems);
         $o = <<<EOT
-<h1>Monorder &ndash; $ptx[events]</h1>
 <ul>
     $listItems
     <li>
