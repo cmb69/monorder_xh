@@ -68,6 +68,58 @@ class Monorder_Controller
     }
 
     /**
+     * Returns the system checks.
+     *
+     * @return array
+     *
+     * @global array The paths of system files and folders.
+     * @global array The localization of the core.
+     * @global array The localization of the plugins.
+     */
+    protected function systemChecks()
+    {
+        global $pth, $tx, $plugin_tx;
+
+        $phpVersion = '5.3.0';
+        $ptx = $plugin_tx['monorder'];
+        $checks = array();
+        $checks[sprintf($ptx['syscheck_phpversion'], $phpVersion)]
+            = version_compare(PHP_VERSION, $phpVersion) >= 0 ? 'ok' : 'fail';
+        foreach (array() as $extension) {
+            $checks[sprintf($ptx['syscheck_extension'], $extension)]
+                = extension_loaded($extension) ? 'ok' : 'fail';
+        }
+        $checks[$ptx['syscheck_magic_quotes']]
+            = !get_magic_quotes_runtime() ? 'ok' : 'fail';
+        $checks[$ptx['syscheck_encoding']]
+            = strtoupper($tx['meta']['codepage']) == 'UTF-8' ? 'ok' : 'warn';
+        $folders = array();
+        foreach (array('config/', 'css/', 'languages/') as $folder) {
+            $folders[] = $pth['folder']['plugins'] . 'monorder/' . $folder;
+        }
+        $folders[] = dirname($this->_model->filename()) . '/';
+        foreach ($folders as $folder) {
+            $checks[sprintf($ptx['syscheck_writable'], $folder)]
+                = is_writable($folder) ? 'ok' : 'warn';
+        }
+        return $checks;
+    }
+
+    /**
+     * Return the plugin information.
+     *
+     * @return string (X)HTML.
+     *
+     * @todo Add synopsis.
+     */
+    public function info()
+    {
+        return '<h1>Monorder &ndash; Info</h1>'
+            . $this->_views->systemCheck($this->systemChecks())
+            . $this->_views->about();
+    }
+
+    /**
      * Returns the item list view.
      *
      * @return (X)HTML.
@@ -189,14 +241,17 @@ class Monorder_Controller
     {
         global $o, $admin, $action;
 
-        $o .= print_plugin_admin('off');
+        $o .= print_plugin_admin('on');
         switch ($admin) {
         case '':
+            $o .= $this->info();
+            break;
+        case 'plugin_main':
             switch ($action) {
-            case 'plugin_text':
+            case 'edit_item':
                 $o .= $this->editItem();
                 break;
-            case 'plugin_textsave':
+            case 'save_item':
                 $o .= $this->saveItem();
                 break;
             case 'new_event':

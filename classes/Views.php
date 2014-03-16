@@ -62,6 +62,106 @@ class Monorder_Views
     }
 
     /**
+     * Returns a single system check list item.
+     *
+     * @param string $check A label.
+     * @param string $state A state.
+     *
+     * @return string XHTML.
+     *
+     * @global array The paths of system files and folders.
+     */
+    protected function systemCheckItem($check, $state)
+    {
+        global $pth;
+
+        $imageFolder = $pth['folder']['plugins'] . 'monorder/images/';
+        return <<<EOT
+<li><img src="$imageFolder$state.png" alt="$state" /> $check</li>
+EOT;
+    }
+
+    /**
+     * Returns the system check view.
+     *
+     * @param array $checks An associative array of system checks (label => state).
+     *
+     * @return string (X)HTML.
+     *
+     * @global array The localization of the plugins.
+     */
+    public function systemCheck($checks)
+    {
+        global $plugin_tx;
+
+        $ptx = $plugin_tx['monorder'];
+        $items = array();
+        foreach ($checks as $check => $state) {
+            $items[] = $this->systemCheckItem($check, $state);
+        }
+        $items = implode('', $items);
+        $o = <<<EOT
+<h4>$ptx[syscheck_title]</h4>
+<ul class="pdeditor_system_check">
+    $items
+</ul>
+EOT;
+        return $this->xhtml($o);
+    }
+
+    /**
+     * Returns summarized GPLv3 license information.
+     *
+     * @return string XHTML.
+     */
+    protected function license()
+    {
+        return <<<EOT
+<p class="monorder_license">
+    This program is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by the Free
+    Software Foundation, either version 3 of the License, or (at your option)
+    any later version.
+</p>
+<p class="monorder_license">
+    This program is distributed in the hope that it will be useful, but
+    <em>without any warranty</em>; without even the implied warranty of
+    <em>merchantability</em> or <em>fitness for a particular purpose</em>. See
+    the GNU General Public License for more details.
+</p>
+<p class="monorder_license">
+    You should have received a copy of the GNU General Public License along with
+    this program. If not, see <a href="http://www.gnu.org/licenses/">
+    http://www.gnu.org/licenses/</a>.
+</p>
+EOT;
+    }
+
+    /**
+     * Returns the plugin about information view.
+     *
+     * @return string (X)HTML.
+     */
+    public function about()
+    {
+        global $plugin_tx;
+
+        $ptx = $plugin_tx['monorder'];
+        $logoPath = $this->_model->logoPath();
+        $version = MONORDER_VERSION;
+        $license = $this->license();
+        $o = <<<EOT
+<h4>$ptx[info_about]</h4>
+<img src="$logoPath" width="128" height="128" alt="$ptx[alt_logo]"
+        style="float: left; margin-right: 16px" />
+<p>Version: $version</p>
+<p>Copyright &copy; 2014 <a href="http://3-magi.net/">Christoph M. Becker</a></p>
+$license
+EOT;
+        return $this->xhtml($o);
+    }
+
+    /**
      * Returns a single list item of the item list view.
      *
      * @param string $item       An item name.
@@ -76,9 +176,10 @@ class Monorder_Views
         global $plugin_tx;
 
         $ptx = $plugin_tx['monorder'];
-        $href = $scriptName . '?monorder&amp;admin=&amp;action=plugin_text'
-            . '&amp;monorder_item=' . $item;
-        $action = $scriptName . '?monorder&amp;admin=&amp;action=delete_event';
+        $href = $scriptName . '?monorder&amp;admin=plugin_main'
+            . '&amp;action=edit_item&amp;monorder_item=' . $item;
+        $action = $scriptName . '?monorder&amp;admin=plugin_main'
+            . '&amp;action=delete_event';
         $onsubmit = 'return window.confirm(\'' . $ptx['confirm_delete'] . '\')';
         return <<<EOT
 <li>
@@ -115,12 +216,12 @@ EOT;
         }
         $listItems = implode('', $listItems);
         $o = <<<EOT
-<h4>$ptx[events]</h4>
+<h1>Monorder &ndash; $ptx[events]</h1>
 <ul>
     $listItems
     <li>
         <form action="$action" method="post">
-            <input type="hidden" name="admin" value="" />
+            <input type="hidden" name="admin" value="plugin_main" />
             <input type="hidden" name="action" value="new_event" />
             <input type="text" name="monorder_item" />
             <button>$ptx[new_event]</button>
@@ -147,11 +248,11 @@ EOT;
         global $plugin_tx;
 
         $ptx = $plugin_tx['monorder'];
-        $action = $scriptName . '?monorder&amp;admin=&amp;action=plugin_textsave'
-            . '&amp;monorder_item=' . $item;
+        $action = $scriptName . '?monorder&amp;admin=plugin_main'
+            . '&amp;action=save_item&amp;monorder_item=' . $item;
         $free = $this->_model->availableAmountOf($item);
         $o = <<<EOT
-<h4>$item</h4>
+<h1>Monorder &ndash; $item</h1>
 <form action="$action" method="post">
     <p>$ptx[free]</p>
     <input type="text" name="monorder_free" value="$free" />

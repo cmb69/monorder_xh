@@ -1,3 +1,6 @@
 .monorder_delete {
     display: inline-block;
 }
+.monorder_license {
+    text-align: justify;
+}

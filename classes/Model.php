@@ -70,7 +70,7 @@ class Monorder_Model
      *
      * @return string
      */
-    function number($amount)
+    public function number($amount)
     {
         if ($amount == 1) {
             $result = 'singular';
@@ -80,6 +80,20 @@ class Monorder_Model
             $result = 'plural';
         }
         return $result;
+    }
+
+    /**
+     * Returns the path of the plugin logo.
+     *
+     * @return string
+     *
+     * @global array The paths of system files and folders.
+     */
+    public function logoPath()
+    {
+        global $pth;
+
+        return $pth['folder']['plugins'] . 'monorder/monorder.png';
     }
 
     /**
