@@ -1,5 +1,19 @@
 <?php
 
+/**
+ * Administration of Monorder_XH.
+ *
+ * PHP version 5
+ *
+ * @category  CMSimple_XH
+ * @package   Monorder
+ * @author    Christoph M. Becker <cmbecker69@gmx.de>
+ * @copyright 2014 Christoph M. Becker <http://3-magi.net>
+ * @license   http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
+ * @version   SVN: $Id$
+ * @link      http://3-magi.net/?CMSimple_XH/Monorder_XH
+ */
+
 /*
  * Prevent direct access.
  */
@@ -8,6 +22,11 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
     exit;
 }
 
+/**
+ * Returns the existing data files.
+ *
+ * @return array
+ */
 function Monorder_files()
 {
     $result = array();
@@ -22,6 +41,16 @@ function Monorder_files()
     return $result;
 }
 
+/**
+ * Returns a list item of the file list.
+ *
+ * @param string $file A file name.
+ *
+ * @return string (X)HTML.
+ *
+ * @global string The script name.
+ * @global array  The localization of the plugins.
+ */
 function Monorder_fileListItem($file)
 {
     global $sn, $plugin_tx;
@@ -34,7 +63,8 @@ function Monorder_fileListItem($file)
     return <<<EOT
 <li>
     <a href="$href">$file</a>
-    <form class="monorder_delete" action="$action" method="post" onsubmit="$onsubmit">
+    <form class="monorder_delete" action="$action" method="post"
+            onsubmit="$onsubmit">
         <input type="hidden" name="monorder_file" value="$file">
         <button>$ptx[label_delete]</button>
     </form>
@@ -42,6 +72,14 @@ function Monorder_fileListItem($file)
 EOT;
 }
 
+/**
+ * Returns the file list view.
+ *
+ * @return (X)HTML.
+ *
+ * @global string The script name.
+ * @global array  The localization of the plugins.
+ */
 function Monorder_fileList()
 {
     global $sn, $plugin_tx;
@@ -68,13 +106,23 @@ $listItems
 EOT;
 }
 
+/**
+ * Returns a file edit form.
+ *
+ * @return string (X)HTML.
+ *
+ * @global string The script name.
+ * @global array  The localization of the plugins.
+ * @global string The current monorder tag. *
+ */
 function Monorder_form()
 {
     global $sn, $plugin_tx, $_Monorder_tag;
 
     $ptx = $plugin_tx['monorder'];
     $file = $_GET['monorder_file'];
-    $action = $sn . '?monorder&admin=&action=plugin_textsave&amp;monorder_file=' . $file;
+    $action = $sn . '?monorder&admin=&action=plugin_textsave&amp;monorder_file='
+        . $file;
     $_Monorder_tag = $file;
     $free = Monorder_free();
     return <<<EOT
@@ -87,6 +135,14 @@ function Monorder_form()
 EOT;
 }
 
+/**
+ * Creates a new event file and returns the file list view.
+ *
+ * @return string (X)HTML.
+ *
+ * @global array  The localization of the plugins.
+ * @global string The current monorder tag.
+ */
 function Monorder_newEvent()
 {
     global $plugin_tx, $_Monorder_tag;
@@ -104,6 +160,14 @@ function Monorder_newEvent()
     return $o;
 }
 
+/**
+ * Deletes an event file and returns the file list view.
+ *
+ * @return string (X)HTML.
+ *
+ * @global array  The localization of the plugins.
+ * @global string The current monorder tag.
+ */
 function Monorder_deleteEvent()
 {
     global $plugin_tx, $_Monorder_tag;
@@ -122,6 +186,14 @@ function Monorder_deleteEvent()
     return $o;
 }
 
+/**
+ * Saves an event file and return the file list view.
+ *
+ * @return string (X)HTML.
+ *
+ * @global array  The localization of the plugins.
+ * @global string The current monorder tag.
+ */
 function Monorder_save()
 {
     global $plugin_tx, $_Monorder_tag;
@@ -140,6 +212,9 @@ function Monorder_save()
     return $o;
 }
 
+/*
+ * Handle the administration.
+ */
 if (isset($monorder) && $monorder == 'true') {
     $o .= print_plugin_admin('off');
     switch ($admin) {
@@ -165,3 +240,5 @@ if (isset($monorder) && $monorder == 'true') {
         $o .= plugin_admin_common($action, $admin, $plugin);
     }
 }
+
+?>
