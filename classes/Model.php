@@ -179,6 +179,13 @@ class Monorder_Model
         return $this->availableAmountOf($item) > 0;
     }
 
+    /**
+     * Modifies the data file while it is exclusively locked.
+     *
+     * @param callback $modifier A function that manipulates ::_items.
+     *
+     * @return void
+     */
     protected function modify($modifier)
     {
         $stream = fopen($this->_filename, 'r+');

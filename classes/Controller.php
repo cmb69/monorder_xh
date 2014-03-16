@@ -118,7 +118,8 @@ class Monorder_Controller
             $item = stsl($_POST['monorder_item']); // TODO sanitize
             try {
                 $this->_model->removeItem($item);
-                $o .= '<p>' . $plugin_tx['monorder']['successfully_deleted'] . '</p>';
+                $o .= '<p>' . $plugin_tx['monorder']['successfully_deleted']
+                    . '</p>';
             } catch (Exception $x) {
                 e('cntdelete', 'file', $filename);
             }
@@ -164,8 +165,8 @@ class Monorder_Controller
         return $o;
     }
 
-    /*
-     * Handle the administration.
+    /**
+     * Handles the administration.
      *
      * @return void
      *

@@ -35,7 +35,7 @@ class Monorder_Views
     /**
      * Initializes a new instance.
      *
-     * @param Monorder_Model A model.
+     * @param Monorder_Model $model A model.
      */
     public function __construct(Monorder_Model $model)
     {
@@ -57,8 +57,8 @@ class Monorder_Views
         global $sn, $plugin_tx;
 
         $ptx = $plugin_tx['monorder'];
-        $href = $sn . '?monorder&amp;admin=&amp;action=plugin_text&amp;monorder_item='
-            . $item;
+        $href = $sn . '?monorder&amp;admin=&amp;action=plugin_text'
+            . '&amp;monorder_item=' . $item;
         $action = $sn . '?monorder&amp;admin=&amp;action=delete_event';
         $onsubmit = 'return window.confirm(\'' . $ptx['confirm_delete'] . '\')';
         return <<<EOT

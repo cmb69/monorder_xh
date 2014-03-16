@@ -25,7 +25,6 @@
  *
  * @global array               The configuration of the plugins.
  * @global array               The localization of the plugins.
- * @global string              The current monorder tag.
  * @global Monorder_Controller The controller object.
  */
 function advfrm_custom_valid_field($form_name, $field_name, $value)
