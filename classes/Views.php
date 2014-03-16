@@ -43,6 +43,25 @@ class Monorder_Views
     }
 
     /**
+     * Returns a string with ETAGCs adjusted to the configured markup language.
+     *
+     * @param string $string A string.
+     *
+     * @return string (X)HTML.
+     *
+     * @global array The configuration of the core.
+     */
+    protected function xhtml($string)
+    {
+        global $cf;
+
+        if (!$cf['xhtml']['endtags']) {
+            $string = str_replace(' />', '>', $string);
+        }
+        return $string;
+    }
+
+    /**
      * Returns a single list item of the item list view.
      *
      * @param string $item       An item name.
@@ -66,7 +85,7 @@ class Monorder_Views
     <a href="$href">$item</a>
     <form class="monorder_delete" action="$action" method="post"
             onsubmit="$onsubmit">
-        <input type="hidden" name="monorder_item" value="$item">
+        <input type="hidden" name="monorder_item" value="$item" />
         <button>$ptx[label_delete]</button>
     </form>
 </li>
@@ -95,18 +114,21 @@ EOT;
             $listItems[] = $this->itemListItem($item, $scriptName);
         }
         $listItems = implode('', $listItems);
-        return <<<EOT
+        $o = <<<EOT
 <h4>$ptx[events]</h4>
 <ul>
-$listItems
-<li><form action="$action" method="post">
-<input type="hidden" name="admin" value="">
-<input type="hidden" name="action" value="new_event">
-<input type="text" name="monorder_item">
-<button>$ptx[new_event]</button>
-</form></li>
+    $listItems
+    <li>
+        <form action="$action" method="post">
+            <input type="hidden" name="admin" value="" />
+            <input type="hidden" name="action" value="new_event" />
+            <input type="text" name="monorder_item" />
+            <button>$ptx[new_event]</button>
+        </form>
+    </li>
 </ul>
 EOT;
+        return $this->xhtml($o);
     }
 
     /**
@@ -125,17 +147,18 @@ EOT;
         global $plugin_tx;
 
         $ptx = $plugin_tx['monorder'];
-        $action = $scriptName . '?monorder&admin=&action=plugin_textsave'
+        $action = $scriptName . '?monorder&amp;admin=&amp;action=plugin_textsave'
             . '&amp;monorder_item=' . $item;
         $free = $this->_model->availableAmountOf($item);
-        return <<<EOT
+        $o = <<<EOT
 <h4>$item</h4>
 <form action="$action" method="post">
     <p>$ptx[free]</p>
-    <input type="text" name="monorder_free" value="$free">
+    <input type="text" name="monorder_free" value="$free" />
     <button>$ptx[save]</button>
 </form>
 EOT;
+        return $this->xhtml($o);
     }
 
     /**
@@ -145,7 +168,7 @@ EOT;
      *
      * @return string (X)HTML.
      *
-     * @global array  The localization of the plugins.
+     * @global array The localization of the plugins.
      */
     public function inventory($item)
     {
