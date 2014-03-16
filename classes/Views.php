@@ -110,21 +110,21 @@ EOT;
     /**
      * Returns an item edit form.
      *
+     * @param string $item An item name.
+     *
      * @return string (X)HTML.
      *
      * @global string The script name.
      * @global array  The localization of the plugins.
      * @global string The current monorder tag.
      */
-    public function itemForm()
+    public function itemForm($item)
     {
-        global $sn, $plugin_tx, $_Monorder_tag;
+        global $sn, $plugin_tx;
 
         $ptx = $plugin_tx['monorder'];
-        $item = $_GET['monorder_item'];
         $action = $sn . '?monorder&admin=&action=plugin_textsave&amp;monorder_item='
             . $item;
-        $_Monorder_tag = $item;
         $free = $this->_model->availableAmountOf($item);
         return <<<EOT
 <h4>$item</h4>
@@ -137,7 +137,7 @@ EOT;
     }
 
     /**
-     * Returns a view of the available amount.
+     * Returns an inventory view.
      *
      * @param string $item An item name.
      *

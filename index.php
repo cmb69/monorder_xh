@@ -33,84 +33,46 @@ require_once $pth['folder']['plugin_classes'] . 'Model.php';
 require_once $pth['folder']['plugin_classes'] . 'Views.php';
 
 /**
- * The model object.
- *
- * @var Monorder_Model
+ * The controller class.
  */
-$_Monorder_model = new Monorder_Model();
+require_once $pth['folder']['plugin_classes'] . 'Controller.php';
 
 /**
- * The views object.
+ * The controller object.
  *
- * @var Monorder_Views
+ * @var Monorder_Controller
  */
-$_Monorder_views = new Monorder_Views($_Monorder_model);
+$_Monorder = new Monorder_Controller();
 
 /**
- * The current monorder tag.
+ * Returns an inventory view.
  *
- * @var string
- */
-$_Monorder_tag = null;
-
-/**
- * The current monorder stream.
- *
- * @var resource
- */
-$_Monorder_stream = null;
-
-/**
- * Returns an available items view.
- *
- * @param string $tag A tag name.
+ * @param string $itemName An item name.
  *
  * @return string (X)HTML.
  *
- * @global Monorder_Views The views object.
+ * @global Monorder_Controller The controller object.
  */
-function monorderfree($tag)
+function Monorder_inventory($itemName)
 {
-    global $_Monorder_views;
+    global $_Monorder;
 
-    return $_Monorder_views->inventory($tag);
+    return $_Monorder->inventory($itemName);
 }
 
 /**
- * Returns a monorder form.
+ * Returns an order form.
  *
- * @param string $formName The name of an Advancedform_XH form.
- * @param string $tag      A monorder tag name.
+ * @param string $formName A name of an Advancedform_XH form.
+ * @param string $itemName An item name.
  *
  * @return string (X)HTML.
- *
- * @global array          The paths of system files and folders.
- * @global array          The localization of the plugins.
- * @global string         The current monorder tag.
- * @global Monorder_Model The model object.
- * @global Monorder_Views The views object.
  */
-function monorderform($formName, $tag)
+function Monorder_form($formName, $itemName)
 {
-    global $pth, $plugin_tx, $_Monorder_tag, $_Monorder_model, $_Monorder_views;
+    global $_Monorder;
 
-    $ptx = $plugin_tx['monorder'];
-    if (!preg_match('/^[a-z0-9-]+$/', $tag)) {
-        return sprintf($ptx['invalid_tag'], $tag);
-    }
-    $_Monorder_tag = $tag;
-    if (($free1 = $_Monorder_model->availableAmountOf($tag)) > 0) {
-        include_once $pth['folder']['plugins'] . 'monorder/advancedform.php';
-        $o = advancedform($formName);
-        $_Monorder_model->clearCache();
-        $free2 = $_Monorder_model->availableAmountOf($tag);
-        if ($free2 == $free1) {
-            $o = $_Monorder_views->inventory($tag) . $o;
-        }
-        return $o;
-    } else {
-        return $ptx['booked_out'];
-    }
+    return $_Monorder->orderForm($formName, $itemName);
 }
 
 ?>

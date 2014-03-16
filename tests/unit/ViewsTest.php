@@ -33,6 +33,16 @@ class ViewsTest extends PHPUnit_Framework_TestCase
         $this->assertTag($matcher, $actual);
     }
 
+    public function testItemFormHasForm()
+    {
+        $matcher = array('tag' => 'form');
+        $this->_model->expects($this->once())
+            ->method('availableAmountOf')
+            ->will($this->returnValue(42));
+        $actual = $this->_subject->itemForm('foo');
+        $this->assertTag($matcher, $actual);
+    }
+
     public function testInventoryShowsAvailableAmount()
     {
         global $plugin_tx;
