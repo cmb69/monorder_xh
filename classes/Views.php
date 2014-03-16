@@ -45,21 +45,21 @@ class Monorder_Views
     /**
      * Returns a single list item of the item list view.
      *
-     * @param string $item An item name.
+     * @param string $item       An item name.
+     * @param string $scriptName A script name.
      *
      * @return string (X)HTML.
      *
-     * @global string The script name.
      * @global array  The localization of the plugins.
      */
-    protected function itemListItem($item)
+    protected function itemListItem($item, $scriptName)
     {
-        global $sn, $plugin_tx;
+        global $plugin_tx;
 
         $ptx = $plugin_tx['monorder'];
-        $href = $sn . '?monorder&amp;admin=&amp;action=plugin_text'
+        $href = $scriptName . '?monorder&amp;admin=&amp;action=plugin_text'
             . '&amp;monorder_item=' . $item;
-        $action = $sn . '?monorder&amp;admin=&amp;action=delete_event';
+        $action = $scriptName . '?monorder&amp;admin=&amp;action=delete_event';
         $onsubmit = 'return window.confirm(\'' . $ptx['confirm_delete'] . '\')';
         return <<<EOT
 <li>
@@ -76,21 +76,23 @@ EOT;
     /**
      * Returns the item list view.
      *
+     * @param string $scriptName A script name.
+     *
      * @return (X)HTML.
      *
      * @global string The script name.
      * @global array  The localization of the plugins.
      */
-    public function itemList()
+    public function itemList($scriptName)
     {
-        global $sn, $plugin_tx;
+        global $plugin_tx;
 
         $ptx = $plugin_tx['monorder'];
-        $action = $sn . '?monorder';
+        $action = $scriptName . '?monorder';
         $items = $this->_model->items();
         $listItems = array();
         foreach ($items as $item => $amount) {
-            $listItems[] = $this->itemListItem($item);
+            $listItems[] = $this->itemListItem($item, $scriptName);
         }
         $listItems = implode('', $listItems);
         return <<<EOT
@@ -110,21 +112,21 @@ EOT;
     /**
      * Returns an item edit form.
      *
-     * @param string $item An item name.
+     * @param string $item       An item name.
+     * @param string $scriptName A script name.
      *
      * @return string (X)HTML.
      *
-     * @global string The script name.
      * @global array  The localization of the plugins.
      * @global string The current monorder tag.
      */
-    public function itemForm($item)
+    public function itemForm($item, $scriptName)
     {
-        global $sn, $plugin_tx;
+        global $plugin_tx;
 
         $ptx = $plugin_tx['monorder'];
-        $action = $sn . '?monorder&admin=&action=plugin_textsave&amp;monorder_item='
-            . $item;
+        $action = $scriptName . '?monorder&admin=&action=plugin_textsave'
+            . '&amp;monorder_item=' . $item;
         $free = $this->_model->availableAmountOf($item);
         return <<<EOT
 <h4>$item</h4>

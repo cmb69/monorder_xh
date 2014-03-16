@@ -71,10 +71,14 @@ class Monorder_Controller
      * Returns the item list view.
      *
      * @return (X)HTML.
+     *
+     * @global string The script name.
      */
     protected function items()
     {
-        return $this->_views->itemList();
+        global $sn;
+
+        return $this->_views->itemList($sn);
     }
 
     /**
@@ -82,11 +86,12 @@ class Monorder_Controller
      *
      * @return string (X)HTML.
      *
+     * @global string The script name.
      * @global array  The localization of the plugins.
      */
     protected function newItem()
     {
-        global $plugin_tx;
+        global $sn, $plugin_tx;
 
         $o = '';
         if (isset($_POST['monorder_item'])) {
@@ -98,7 +103,7 @@ class Monorder_Controller
                 e('cntwriteto', 'file', $this->_model->filename());
             }
         }
-        $o .= $this->_views->itemList();
+        $o .= $this->_views->itemList($sn);
         return $o;
     }
 
@@ -107,11 +112,12 @@ class Monorder_Controller
      *
      * @return string (X)HTML.
      *
+     * @global string The script name.
      * @global array  The localization of the plugins.
      */
     protected function deleteItem()
     {
-        global $plugin_tx;
+        global $sn, $plugin_tx;
 
         $o = '';
         if (isset($_POST['monorder_item'])) {
@@ -124,7 +130,7 @@ class Monorder_Controller
                 e('cntdelete', 'file', $filename);
             }
         }
-        $o .= $this->_views->itemList();
+        $o .= $this->_views->itemList($sn);
         return $o;
     }
 
@@ -132,11 +138,15 @@ class Monorder_Controller
      * Returns an item edit view.
      *
      * @return string (X)HTML.
+     *
+     * @global string The script name.
      */
     protected function editItem()
     {
+        global $sn;
+
         $item = stsl($_GET['monorder_item']);
-        return $this->_views->itemForm($item);
+        return $this->_views->itemForm($item, $sn);
     }
 
     /**
@@ -144,11 +154,12 @@ class Monorder_Controller
      *
      * @return string (X)HTML.
      *
+     * @global string The script name.
      * @global array  The localization of the plugins.
      */
     protected function saveItem()
     {
-        global $plugin_tx;
+        global $sn, $plugin_tx;
 
         $o = '';
         $item = stsl($_GET['monorder_item']); // TODO sanitize
@@ -161,7 +172,7 @@ class Monorder_Controller
                 e('cntwriteto', 'file', $this->_model->filename());
             }
         }
-        $o .= $this->_views->itemForm($item);
+        $o .= $this->_views->itemForm($item, $sn);
         return $o;
     }
 
