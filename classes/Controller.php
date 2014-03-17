@@ -153,17 +153,23 @@ class Monorder_Controller
             $item = stsl($_POST['monorder_item']); // TODO sanitize
             try {
                 $this->_model->setItemAmount($item, 0);
+                $o = $this->_views->administrationHeading($item);
                 $o .= $this->_views->message(
                     'success', sprintf($ptx['message_saved'], $item)
                 );
+                $o .= $this->_views->itemForm($item, $sn);
             } catch (Exception $ex) {
+                $o = $this->_views->administrationHeading($ptx['events']);
                 $o .= $this->_views->message(
                     'fail',
                     sprintf($ptx['message_cant_write'], $this->_model->filename())
                 );
+                $o .= $this->_views->itemList($sn);
             }
+        } else {
+            $o = $this->_views->administrationHeading($ptx['events']);
+            $o .= $this->_views->itemList($sn);
         }
-        $o .= $this->_views->itemList($sn);
         return $o;
     }
 
