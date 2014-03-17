@@ -310,7 +310,7 @@ class Monorder_Controller
      * If the reservation succeeded <var>true</var> is returned, otherwise an
      * error message.
      *
-     * @param int    $amount An amount.
+     * @param int $amount An amount.
      *
      * @return mixed
      */
