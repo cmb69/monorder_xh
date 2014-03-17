@@ -108,6 +108,8 @@ class Monorder_Model
      * Creates a new data file.
      *
      * @return void
+     *
+     * @throws RuntimeException
      */
     protected function createDataFile()
     {
@@ -142,6 +144,8 @@ class Monorder_Model
      * Returns the item data as map from item name to available amount.
      *
      * @return array
+     *
+     * @throws RuntimeException
      */
     public function items()
     {
@@ -150,6 +154,10 @@ class Monorder_Model
             if ($stream) {
                 flock($stream, LOCK_SH);
                 $this->_items = unserialize(stream_get_contents($stream));
+                if ($this->_items === false) {
+                    throw new RuntimeException("Can't read {$this->_filename}", 1);
+                }
+                ksort($this->_items);
                 flock($stream, LOCK_UN);
                 fclose($stream);
             } else {
@@ -205,6 +213,8 @@ class Monorder_Model
      * @param callback $modifier A function that manipulates ::_items.
      *
      * @return void
+     *
+     * @throws RuntimeException
      */
     protected function modify($modifier)
     {
@@ -281,6 +291,8 @@ class Monorder_Model
      * @param int    $amount An amount.
      *
      * @return bool
+     *
+     * @throws RuntimeException
      */
     public function reserve($item, $amount)
     {

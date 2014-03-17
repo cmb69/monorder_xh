@@ -243,7 +243,14 @@ EOT;
 
         $ptx = $plugin_tx['monorder'];
         $action = $scriptName . '?monorder';
-        $items = $this->_model->items();
+        try {
+            $items = $this->_model->items();
+        } catch (RuntimeException $ex) {
+            return $this->message(
+                'fail',
+                sprintf($ptx['message_cant_read'], $this->_model->filename())
+            );
+        }
         $listItems = array();
         foreach ($items as $item => $amount) {
             $listItems[] = $this->itemListItem($item, $scriptName);
