@@ -217,12 +217,12 @@ EOT;
         $onsubmit = 'return window.confirm(\'' . $ptx['confirm_delete'] . '\')';
         return <<<EOT
 <li>
-    <a href="$href">$item</a>
     <form class="monorder_delete" action="$action" method="post"
             onsubmit="$onsubmit">
         <input type="hidden" name="monorder_item" value="$item" />
         <button>$ptx[label_delete]</button>
     </form>
+    <a href="$href">$item</a>
 </li>
 EOT;
     }
@@ -256,8 +256,8 @@ EOT;
         <form action="$action" method="post">
             <input type="hidden" name="admin" value="plugin_main" />
             <input type="hidden" name="action" value="new_event" />
-            <input type="text" name="monorder_item" />
             <button>$ptx[new_event]</button>
+            <input type="text" name="monorder_item" />
         </form>
     </li>
 </ul>
@@ -287,8 +287,7 @@ EOT;
         $o = <<<EOT
 <h1>Monorder &ndash; $item</h1>
 <form action="$action" method="post">
-    <p>$ptx[free]</p>
-    <input type="text" name="monorder_free" value="$free" />
+    <p>$ptx[free] <input type="text" name="monorder_free" value="$free" /></p>
     <button>$ptx[save]</button>
 </form>
 EOT;
