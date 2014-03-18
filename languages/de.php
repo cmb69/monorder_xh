@@ -15,7 +15,7 @@ $plugin_tx['monorder']['button_create']="Erzeugen";
 $plugin_tx['monorder']['button_delete']="Löschen";
 $plugin_tx['monorder']['button_save']="Speichern";
 
-$plugin_tx['monorder']['message_delete']="Der Posten wird unwiderruflich gelöscht!";
+$plugin_tx['monorder']['message_delete']="Dieser Posten wird unwiderruflich gelöscht!";
 $plugin_tx['monorder']['message_saved']="\"%s\" wurde erfolgreich gespeichert.";
 $plugin_tx['monorder']['message_deleted']="\"%s\" wurde erfolgreich gelöscht.";
 $plugin_tx['monorder']['message_cant_read']="\"%s\" konnte nicht gelesen werden.";

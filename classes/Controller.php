@@ -149,8 +149,10 @@ class Monorder_Controller
 
         $ptx = $plugin_tx['monorder'];
         $o = $this->_views->administrationHeading($ptx['label_items']);
-        if (isset($_POST['monorder_item'])) {
-            $item = stsl($_POST['monorder_item']); // TODO sanitize
+        if (isset($_POST['monorder_item'])
+            && ($item = trim(stsl($_POST['monorder_item'])))
+            && !$this->_model->hasItem($item)
+        ) {
             try {
                 $this->_model->setItemAmount($item, 0);
                 $o = $this->_views->administrationHeading($item);
@@ -187,8 +189,10 @@ class Monorder_Controller
 
         $ptx = $plugin_tx['monorder'];
         $o = $this->_views->administrationHeading($ptx['label_items']);
-        if (isset($_POST['monorder_item'])) {
-            $item = stsl($_POST['monorder_item']); // TODO sanitize
+        if (isset($_POST['monorder_item'])
+            && ($item = stsl($_POST['monorder_item']))
+            && $this->_model->hasItem($item)
+        ) {
             try {
                 $this->_model->removeItem($item);
                 $o .= $this->_views->message(
@@ -234,9 +238,13 @@ class Monorder_Controller
 
         $ptx = $plugin_tx['monorder'];
         $o = $this->_views->administrationHeading($ptx['label_items']);
-        $item = stsl($_GET['monorder_item']); // TODO sanitize
-        if (isset($_POST['monorder_amount'])) {
-            $amount = stsl($_POST['monorder_amount']);
+        if (isset($_GET['monorder_item'])
+            && ($item = stsl($_GET['monorder_item']))
+            && $this->_model->hasItem($item)
+            && isset($_POST['monorder_amount'])
+            && ($amount = trim(stsl($_POST['monorder_amount'])))
+            && preg_match('/^[0-9]+$/', $amount)
+        ) {
             try {
                 $this->_model->setItemAmount($item, $amount);
                 $o .= $this->_views->message(

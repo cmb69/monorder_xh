@@ -15,7 +15,7 @@ $plugin_tx['monorder']['button_create']="Create";
 $plugin_tx['monorder']['button_delete']="Delete";
 $plugin_tx['monorder']['button_save']="Save";
 
-$plugin_tx['monorder']['message_delete']="The item will be deleted irreversibly!";
+$plugin_tx['monorder']['message_delete']="This item will be deleted irreversibly!";
 $plugin_tx['monorder']['message_saved']="\"%s\" has been successfully saved.";
 $plugin_tx['monorder']['message_deleted']="\"%s\" has been successfully deleted.";
 $plugin_tx['monorder']['message_cant_read']="\"%s\" couldn't be read.";
