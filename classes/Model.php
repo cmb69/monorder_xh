@@ -47,6 +47,20 @@ class Monorder_Model
     private $_stream;
 
     /**
+     * The temporary item name needed for callbacks.
+     *
+     * @var string
+     */
+    private $_tempItem;
+
+    /**
+     * The temporary amount needed for callbacks.
+     *
+     * @var int
+     */
+    private $_tempAmount;
+
+    /**
      * Initializes a new instance.
      *
      * @global array The paths of system files and folders.
@@ -242,20 +256,30 @@ class Monorder_Model
     /**
      * Sets the available amount of an item.
      *
+     * @return void
+     */
+    protected function doSetItemAmount()
+    {
+        $this->_items[$this->_tempItem] = $this->_tempAmount;
+    }
+
+    /**
+     * Sets the available amount of an item.
+     *
      * @param string $item   An item name.
      * @param int    $amount An amount.
      *
      * @return void
+     *
+     * @todo Rewrite with a closure (requires PHP 5.4).
      */
     public function setItemAmount($item, $amount)
     {
         assert($amount >= 0);
 
-        $this->modify(
-            function () use ($item, $amount) {
-                $this->_items[$item] = $amount;
-            }
-        );
+        $this->_tempItem = $item;
+        $this->_tempAmount = $amount;
+        $this->modify(array($this, 'doSetItemAmount'));
     }
 
     /**
@@ -275,19 +299,28 @@ class Monorder_Model
     /**
      * Removes an item.
      *
+     * @return void
+     */
+    protected function doRemoveItem()
+    {
+        unset($this->_items[$this->_tempItem]);
+    }
+
+    /**
+     * Removes an item.
+     *
      * @param string $name An item name.
      *
      * @return void
+     *
+     * @todo Rewrite with a closure (requires PHP 5.4).
      */
     public function removeItem($name)
     {
         assert($this->hasItem($name));
 
-        $this->modify(
-            function () use ($name) {
-                unset($this->_items[$name]);
-            }
-        );
+        $this->_tempItem = $name;
+        $this->modify(array($this, 'doRemoveItem'));
     }
 
     /**

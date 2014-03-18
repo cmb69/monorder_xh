@@ -1,4 +1,3 @@
-* get rid of anonymous functions and reduce requirements to PHP 5.1(?)
 * add manuals
 * add CSRF protection
 * metaconfig.php

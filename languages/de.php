@@ -25,7 +25,7 @@ $plugin_tx['monorder']['syscheck_title']="Systemprüfung";
 $plugin_tx['monorder']['syscheck_phpversion']="PHP-Version &ge; %s";
 $plugin_tx['monorder']['syscheck_extension']="Erweiterung \"%s\" geladen";
 $plugin_tx['monorder']['syscheck_encoding']="UTF-8 Kodierung eingestellt";
-$plugin_tx['monorder']['syscheck_magic_quotes']="magic_quotes_runtime aus";
+$plugin_tx['monorder']['syscheck_magic_quotes']="magic_quotes_runtime Off";
 $plugin_tx['monorder']['syscheck_writable']="Ordner \"%s\" beschreibbar";
 
 $plugin_tx['monorder']['info_about']="Über Monorder_XH";

@@ -80,7 +80,7 @@ class Monorder_Controller
     {
         global $pth, $tx, $plugin_tx;
 
-        $phpVersion = '5.3.0';
+        $phpVersion = '5.1.0';
         $ptx = $plugin_tx['monorder'];
         $checks = array();
         $checks[sprintf($ptx['syscheck_phpversion'], $phpVersion)]
