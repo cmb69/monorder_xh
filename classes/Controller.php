@@ -131,7 +131,7 @@ class Monorder_Controller
         global $sn, $plugin_tx;
 
         $ptx = $plugin_tx['monorder'];
-        return $this->_views->administrationHeading($ptx['events'])
+        return $this->_views->administrationHeading($ptx['label_items'])
             . $this->_views->itemList($sn);
     }
 
@@ -148,7 +148,7 @@ class Monorder_Controller
         global $sn, $plugin_tx;
 
         $ptx = $plugin_tx['monorder'];
-        $o = $this->_views->administrationHeading($ptx['events']);
+        $o = $this->_views->administrationHeading($ptx['label_items']);
         if (isset($_POST['monorder_item'])) {
             $item = stsl($_POST['monorder_item']); // TODO sanitize
             try {
@@ -159,7 +159,7 @@ class Monorder_Controller
                 );
                 $o .= $this->_views->itemForm($item, $sn);
             } catch (Exception $ex) {
-                $o = $this->_views->administrationHeading($ptx['events']);
+                $o = $this->_views->administrationHeading($ptx['label_items']);
                 $o .= $this->_views->message(
                     'fail',
                     sprintf($ptx['message_cant_write'], $this->_model->filename())
@@ -167,7 +167,7 @@ class Monorder_Controller
                 $o .= $this->_views->itemList($sn);
             }
         } else {
-            $o = $this->_views->administrationHeading($ptx['events']);
+            $o = $this->_views->administrationHeading($ptx['label_items']);
             $o .= $this->_views->itemList($sn);
         }
         return $o;
@@ -186,7 +186,7 @@ class Monorder_Controller
         global $sn, $plugin_tx;
 
         $ptx = $plugin_tx['monorder'];
-        $o = $this->_views->administrationHeading($ptx['events']);
+        $o = $this->_views->administrationHeading($ptx['label_items']);
         if (isset($_POST['monorder_item'])) {
             $item = stsl($_POST['monorder_item']); // TODO sanitize
             try {
@@ -233,7 +233,7 @@ class Monorder_Controller
         global $sn, $plugin_tx;
 
         $ptx = $plugin_tx['monorder'];
-        $o = $this->_views->administrationHeading($ptx['events']);
+        $o = $this->_views->administrationHeading($ptx['label_items']);
         $item = stsl($_GET['monorder_item']); // TODO sanitize
         if (isset($_POST['monorder_free'])) {
             $amount = stsl($_POST['monorder_free']);
@@ -329,7 +329,7 @@ class Monorder_Controller
             if ($this->_model->reserve($this->_currentItem, $amount)) {
                 $result = true;
             } else {
-                $result = $ptx['overbooked'];
+                $result = $ptx['avail_not_enough'];
             }
         } catch (RuntimeException $ex) {
             if (XH_ADM) {
@@ -395,7 +395,7 @@ class Monorder_Controller
             }
             return $o;
         } else {
-            return $ptx['booked_out'];
+            return $ptx['avail_zero'];
         }
     }
 }

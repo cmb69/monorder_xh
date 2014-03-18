@@ -214,13 +214,17 @@ EOT;
             . '&amp;action=edit_item&amp;monorder_item=' . $item;
         $action = $scriptName . '?monorder&amp;admin=plugin_main'
             . '&amp;action=delete_event';
-        $onsubmit = 'return window.confirm(\'' . $ptx['confirm_delete'] . '\')';
+        $message = htmlspecialchars(
+            addcslashes($ptx['message_delete'], "\r\n'"),
+            ENT_COMPAT, 'UTF-8'
+        );
+        $onsubmit = 'return window.confirm(\'' . $message . '\')';
         return <<<EOT
 <li>
     <form class="monorder_delete" action="$action" method="post"
             onsubmit="$onsubmit">
         <input type="hidden" name="monorder_item" value="$item" />
-        <button>$ptx[label_delete]</button>
+        <button>$ptx[button_delete]</button>
     </form>
     <a href="$href">$item</a>
 </li>
@@ -263,7 +267,7 @@ EOT;
         <form action="$action" method="post">
             <input type="hidden" name="admin" value="plugin_main" />
             <input type="hidden" name="action" value="new_event" />
-            <button>$ptx[new_event]</button>
+            <button>$ptx[button_create]</button>
             <input type="text" name="monorder_item" />
         </form>
     </li>
@@ -294,8 +298,13 @@ EOT;
         $o = <<<EOT
 <h1>Monorder &ndash; $item</h1>
 <form action="$action" method="post">
-    <p>$ptx[free] <input type="text" name="monorder_free" value="$free" /></p>
-    <button>$ptx[save]</button>
+    <p>
+        <label>
+            $ptx[label_available]
+            <input type="text" name="monorder_free" value="$free" />
+        </label>
+    </p>
+    <button>$ptx[button_save]</button>
 </form>
 EOT;
         return $this->xhtml($o);
@@ -317,9 +326,9 @@ EOT;
         $free = $this->_model->availableAmountOf($item);
         if ($free > 0) {
             $suffix = $this->_model->number($free);
-            $result = sprintf($plugin_tx['monorder']["free_$suffix"], $free);
+            $result = sprintf($plugin_tx['monorder']["avail_$suffix"], $free);
         } else {
-            $result = $plugin_tx['monorder']['booked_out'];
+            $result = $plugin_tx['monorder']['avail_zero'];
         }
         return $result;
     }
