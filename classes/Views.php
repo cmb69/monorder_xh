@@ -323,10 +323,10 @@ EOT;
     {
         global $plugin_tx;
 
-        $free = $this->_model->availableAmountOf($item);
-        if ($free > 0) {
-            $suffix = $this->_model->number($free);
-            $result = sprintf($plugin_tx['monorder']["avail_$suffix"], $free);
+        $amount = $this->_model->availableAmountOf($item);
+        if ($amount > 0) {
+            $suffix = $this->_model->number($amount);
+            $result = sprintf($plugin_tx['monorder']["avail_$suffix"], $amount);
         } else {
             $result = $plugin_tx['monorder']['avail_zero'];
         }
