@@ -112,7 +112,7 @@ class ViewsTest extends PHPUnit_Framework_TestCase
         global $plugin_tx;
 
         $expected = 42;
-        $plugin_tx['monorder']['free_plural'] = '%d';
+        $plugin_tx['monorder']['avail_plural'] = '%d';
         $this->_model->expects($this->once())
             ->method('availableAmountOf')
             ->will($this->returnValue($expected));
