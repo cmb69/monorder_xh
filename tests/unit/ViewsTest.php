@@ -42,6 +42,17 @@ class ViewsTest extends PHPUnit_Framework_TestCase
         $this->assertTag($matcher, $actual);
     }
 
+    public function testAdminstrationHeading()
+    {
+        $title = 'foobar';
+        $matcher = array(
+            'tag' => 'h1',
+            'content' => "Monorder \xE2\x80\x93 $title"
+        );
+        $actual = $this->_subject->administrationHeading($title);
+        $this->assertTag($matcher, $actual);
+    }
+
     public function testSystemCheck()
     {
         $checks = array('everything' => 'ok');
