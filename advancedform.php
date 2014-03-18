@@ -31,7 +31,12 @@ function advfrm_custom_valid_field($form_name, $field_name, $value)
     global $plugin_cf, $_Monorder;
 
     if ($field_name == $plugin_cf['monorder']['advancedform_field']) {
-        $result = $_Monorder->reserve($value);
+        if (preg_match('/^[0-9]+$/', $value)) {
+            $result = $_Monorder->reserve($value);
+        } else {
+            // let Advancedform_XH report the appropriate error
+            $result = true;
+        }
     } else {
         $result = true;
     }
