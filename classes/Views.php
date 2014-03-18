@@ -294,14 +294,14 @@ EOT;
         $ptx = $plugin_tx['monorder'];
         $action = $scriptName . '?monorder&amp;admin=plugin_main'
             . '&amp;action=save_item&amp;monorder_item=' . $item;
-        $free = $this->_model->availableAmountOf($item);
+        $amount = $this->_model->availableAmountOf($item);
         $o = <<<EOT
 <h1>Monorder &ndash; $item</h1>
 <form action="$action" method="post">
     <p>
         <label>
             $ptx[label_available]
-            <input type="text" name="monorder_free" value="$free" />
+            <input type="text" name="monorder_amount" value="$amount" />
         </label>
     </p>
     <button>$ptx[button_save]</button>

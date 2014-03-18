@@ -235,8 +235,8 @@ class Monorder_Controller
         $ptx = $plugin_tx['monorder'];
         $o = $this->_views->administrationHeading($ptx['label_items']);
         $item = stsl($_GET['monorder_item']); // TODO sanitize
-        if (isset($_POST['monorder_free'])) {
-            $amount = stsl($_POST['monorder_free']);
+        if (isset($_POST['monorder_amount'])) {
+            $amount = stsl($_POST['monorder_amount']);
             try {
                 $this->_model->setItemAmount($item, $amount);
                 $o .= $this->_views->message(
@@ -385,12 +385,12 @@ class Monorder_Controller
         } else {
             return '<p>ERROROROROOR</p>';
         }
-        if (($free1 = $this->_model->availableAmountOf($itemName)) > 0) {
+        if (($amountBefore = $this->_model->availableAmountOf($itemName)) > 0) {
             include_once $pth['folder']['plugins'] . 'monorder/advancedform.php';
             $o = advancedform($formName);
             $this->_model->clearCache();
-            $free2 = $this->_model->availableAmountOf($itemName);
-            if ($free2 == $free1) {
+            $amountAfter = $this->_model->availableAmountOf($itemName);
+            if ($amountAfter == $amountBefore) {
                 $o = $this->_views->inventory($itemName) . $o;
             }
             return $o;
