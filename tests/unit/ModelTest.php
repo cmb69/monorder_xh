@@ -19,6 +19,17 @@ class ModelTest extends PHPUnit_Framework_TestCase
         $this->_subject = new Monorder_Model();
     }
 
+    public function testCustomDataFolder()
+    {
+        global $pth, $plugin_cf;
+
+        $pth['folder']['base'] = vfsStream::url('plugins/');
+        $plugin_cf['monorder']['folder_data'] = 'userfiles';
+        $subject = new Monorder_Model();
+        $expected = $pth['folder']['base'] . 'userfiles/monorder.dat';
+        $this->assertEquals($expected, $subject->filename());
+    }
+
     public function testNumber()
     {
         $this->assertEquals('plural', $this->_subject->number(0));

@@ -53,9 +53,15 @@ class Monorder_Model
      */
     public function __construct()
     {
-        global $pth;
+        global $pth, $plugin_cf;
 
-        $this->_filename = $pth['folder']['plugins'] . 'monorder/data/monorder.dat';
+        if ($plugin_cf['monorder']['folder_data']) {
+            $this->_filename = $pth['folder']['base']
+                . trim($plugin_cf['monorder']['folder_data'], '/') . '/';
+        } else {
+            $this->_filename = $pth['folder']['plugins'] . 'monorder/data/';
+        }
+        $this->_filename .= 'monorder.dat';
         if (!file_exists($this->_filename)) {
             $this->createDataFile();
         }

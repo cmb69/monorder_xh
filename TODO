@@ -2,6 +2,4 @@
 * add manuals
 * add CSRF protection
 * metaconfig.php
-* check integer input for available items
-* make data file configurable
 * integrate edit forms to list?
