@@ -1,6 +1,6 @@
 <?php
 
 $plugin_cf['monorder']['folder_data']="";
-$plugin_cf['monorder']['field_name']="order_amount";
+$plugin_cf['monorder']['advancedform_field']="order_amount";
 
 ?>

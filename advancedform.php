@@ -30,7 +30,7 @@ function advfrm_custom_valid_field($form_name, $field_name, $value)
 {
     global $plugin_cf, $_Monorder;
 
-    if ($field_name == $plugin_cf['monorder']['field_name']) {
+    if ($field_name == $plugin_cf['monorder']['advancedform_field']) {
         $result = $_Monorder->reserve($value);
     } else {
         $result = true;
@@ -54,7 +54,7 @@ function advfrm_custom_mail($form_name, &$mail, $is_confirmation)
 {
     global $plugin_cf, $_Monorder;
 
-    $fieldname = 'advfrm-' . $plugin_cf['monorder']['field_name'];
+    $fieldname = 'advfrm-' . $plugin_cf['monorder']['advancedform_field'];
     if (!$is_confirmation) {
         $_Monorder->commitReservation();
     }

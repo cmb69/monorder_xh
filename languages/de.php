@@ -33,6 +33,6 @@ $plugin_tx['monorder']['info_about']="Über Monorder_XH";
 $plugin_tx['monorder']['alt_logo']="Bestellformular";
 
 $plugin_tx['monorder']['cf_folder_data']="Der Pfad eines Ordners relativ zum CMSimple_XH Installationsordner, wo die Plugindaten gespeichert werden sollen (z.B. \"userfiles\"); leer lassen, um im data/ Ordner des Plugins zu speichern.";
-$plugin_tx['monorder']['cf_field_name']="Der Name des Advancedform_XH Feldes (vom Typ \"Nummer\" oder \"versteckt\"), das die Bestellmenge angibt.";
+$plugin_tx['monorder']['cf_advancedform_field']="Der Name des Advancedform_XH Feldes (vom Typ \"Nummer\" oder \"versteckt\"), das die Bestellmenge angibt.";
 
 ?>
