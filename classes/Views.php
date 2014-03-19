@@ -116,6 +116,26 @@ EOS;
     }
 
     /**
+     * Returns the synopsis view.
+     *
+     * @return string (X)HTML.
+     */
+    public function synopsis()
+    {
+        global $plugin_tx;
+
+        $ptx = $plugin_tx['monorder'];
+        $formName = $ptx['synopsis_form_name'];
+        $itemName = $ptx['synopsis_item_name'];
+        $result = <<<EOT
+<h4>$ptx[synopsis_title]</h4>
+<pre>{{{PLUGIN:monorder_form('$formName', '$itemName');}}}</pre>
+<pre>{{{PLUGIN:monorder_inventory('$itemName');}}}</pre>
+EOT;
+        return $this->xhtml($result);
+    }
+
+    /**
      * Returns the system check view.
      *
      * @param array $checks An associative array of system checks (label => state).

@@ -53,6 +53,12 @@ class ViewsTest extends PHPUnit_Framework_TestCase
         $this->assertTag($matcher, $actual);
     }
 
+    public function testSynopsis()
+    {
+        $matcher = array('tag' => 'h4');
+        $this->assertTag($matcher, $this->_subject->synopsis());
+    }
+
     public function testSystemCheck()
     {
         $checks = array('everything' => 'ok');

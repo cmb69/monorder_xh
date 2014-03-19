@@ -115,6 +115,7 @@ class Monorder_Controller
     public function info()
     {
         return '<h1>Monorder &ndash; Info</h1>'
+            . $this->_views->synopsis()
             . $this->_views->systemCheck($this->systemChecks())
             . $this->_views->about();
     }

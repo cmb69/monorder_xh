@@ -21,6 +21,10 @@ $plugin_tx['monorder']['message_deleted']="\"%s\" has been successfully deleted.
 $plugin_tx['monorder']['message_cant_read']="\"%s\" couldn't be read.";
 $plugin_tx['monorder']['message_cant_write']="\"%s\" couldn't be written.";
 
+$plugin_tx['monorder']['synopsis_title']="Synopsis";
+$plugin_tx['monorder']['synopsis_form_name']="FORM_NAME";
+$plugin_tx['monorder']['synopsis_item_name']="ITEM_NAME";
+
 $plugin_tx['monorder']['syscheck_title']="System Check";
 $plugin_tx['monorder']['syscheck_phpversion']="PHP version &ge; %s";
 $plugin_tx['monorder']['syscheck_extension']="Extension \"%s\" loaded";
