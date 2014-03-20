@@ -305,7 +305,6 @@ EOT;
      * @return string (X)HTML.
      *
      * @global array  The localization of the plugins.
-     * @global string The current monorder tag.
      */
     public function itemForm($item, $scriptName)
     {

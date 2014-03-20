@@ -109,8 +109,6 @@ class Monorder_Controller
      * Return the plugin information.
      *
      * @return string (X)HTML.
-     *
-     * @todo Add synopsis.
      */
     public function info()
     {
@@ -383,6 +381,8 @@ class Monorder_Controller
      *
      * @global array The paths of system files and folders.
      * @global array The localization of the plugins.
+     *
+     * @todo Improve error message "ERRRORROOOR"
      */
     public function orderForm($formName, $itemName)
     {

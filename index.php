@@ -46,6 +46,8 @@ define('MONORDER_VERSION', '@MONORDER_VERSION@');
  * The controller object.
  *
  * @var Monorder_Controller
+ *
+ * @todo Catch exception
  */
 $_Monorder = new Monorder_Controller();
 
