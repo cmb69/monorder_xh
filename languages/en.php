@@ -20,6 +20,7 @@ $plugin_tx['monorder']['message_saved']="\"%s\" has been successfully saved.";
 $plugin_tx['monorder']['message_deleted']="\"%s\" has been successfully deleted.";
 $plugin_tx['monorder']['message_cant_read']="\"%s\" couldn't be read.";
 $plugin_tx['monorder']['message_cant_write']="\"%s\" couldn't be written.";
+$plugin_tx['monorder']['message_wrong_item']="You can't order this item with this form!";
 
 $plugin_tx['monorder']['synopsis_title']="Synopsis";
 $plugin_tx['monorder']['synopsis_form_name']="FORM_NAME";
@@ -37,6 +38,7 @@ $plugin_tx['monorder']['info_about']="About Monorder_XH";
 $plugin_tx['monorder']['alt_logo']="Order form";
 
 $plugin_tx['monorder']['cf_folder_data']="The path of a folder relative to the CMSimple_XH installation folder where to store the plugin data (e.g. \"userfiles\"); leave empty to store in the data/ folder of the plugin.";
-$plugin_tx['monorder']['cf_advancedform_field']="The name of the Advancedform_XH field (type \"number\" or \"hidden\") that specifies the order amount.";
+$plugin_tx['monorder']['cf_advancedform_item_field']="The name of the Advancedform_XH field (type \"text\" or \"hidden\") that specifies the order item.";
+$plugin_tx['monorder']['cf_advancedform_amount_field']="The name of the Advancedform_XH field (type \"number\" or \"hidden\") that specifies the order amount.";
 
 ?>

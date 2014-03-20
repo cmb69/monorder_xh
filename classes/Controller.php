@@ -397,7 +397,7 @@ class Monorder_Controller
         if (($amountBefore = $this->_model->availableAmountOf($itemName)) > 0) {
             include_once $pth['folder']['plugins'] . 'monorder/advancedform.php';
             $o = advancedform($formName);
-            if ($this->_model->commitPending()) {
+            if ($this->_model->reservationInProgress()) {
                 $this->_model->rollbackReservation();
             }
             $this->_model->clearCache();
