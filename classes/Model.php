@@ -358,6 +358,16 @@ class Monorder_Model
     }
 
     /**
+     * Returns whether a reservation is in progress.
+     *
+     * @return bool
+     */
+    public function reservationInProgress()
+    {
+        return isset($this->_stream);
+    }
+
+    /**
      * Commits the current reservation.
      *
      * @return void
@@ -369,6 +379,18 @@ class Monorder_Model
         fseek($this->_stream, 0);
         ftruncate($this->_stream, 0);
         fwrite($this->_stream, serialize($this->_items));
+        flock($this->_stream, LOCK_UN);
+        fclose($this->_stream);
+        $this->_stream = null;
+    }
+
+    /**
+     * Rolls back the current reservation.
+     *
+     * @return void
+     */
+    public function rollbackReservation()
+    {
         flock($this->_stream, LOCK_UN);
         fclose($this->_stream);
         $this->_stream = null;

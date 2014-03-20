@@ -90,6 +90,8 @@ class ModelTest extends PHPUnit_Framework_TestCase
         $itemName = 'foo';
         $this->_subject->setItemAmount($itemName, 17);
         $this->_subject->reserve($itemName, 4);
+        $this->assertTrue($this->_subject->reservationInProgress());
+        $this->_subject->rollbackReservation();
         $this->_subject->clearCache();
         $actual = $this->_subject->availableAmountOf($itemName);
         $this->assertEquals(17, $actual);
@@ -100,6 +102,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
         $itemName = 'foo';
         $this->_subject->setItemAmount($itemName, 17);
         $this->_subject->reserve($itemName, 4);
+        $this->assertTrue($this->_subject->reservationInProgress());
         $this->_subject->commitReservation();
         $this->_subject->clearCache();
         $actual = $this->_subject->availableAmountOf($itemName);
