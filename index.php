@@ -23,6 +23,11 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
 }
 
 /**
+ * The exception classes.
+ */
+require_once $pth['folder']['plugin_classes'] . 'Exceptions.php';
+
+/**
  * The model class.
  */
 require_once $pth['folder']['plugin_classes'] . 'Model.php';

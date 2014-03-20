@@ -152,21 +152,12 @@ class Monorder_Controller
             && ($item = trim(stsl($_POST['monorder_item'])))
             && !$this->_model->hasItem($item)
         ) {
-            try {
-                $this->_model->setItemAmount($item, 0);
-                $o = $this->_views->administrationHeading($item);
-                $o .= $this->_views->message(
-                    'success', sprintf($ptx['message_saved'], $item)
-                );
-                $o .= $this->_views->itemForm($item, $sn);
-            } catch (Exception $ex) {
-                $o = $this->_views->administrationHeading($ptx['label_items']);
-                $o .= $this->_views->message(
-                    'fail',
-                    sprintf($ptx['message_cant_write'], $this->_model->filename())
-                );
-                $o .= $this->_views->itemList($sn);
-            }
+            $this->_model->setItemAmount($item, 0);
+            $o = $this->_views->administrationHeading($item);
+            $o .= $this->_views->message(
+                'success', sprintf($ptx['message_saved'], $item)
+            );
+            $o .= $this->_views->itemForm($item, $sn);
         } else {
             $o = $this->_views->administrationHeading($ptx['label_items']);
             $o .= $this->_views->itemList($sn);
@@ -192,17 +183,10 @@ class Monorder_Controller
             && ($item = stsl($_POST['monorder_item']))
             && $this->_model->hasItem($item)
         ) {
-            try {
-                $this->_model->removeItem($item);
-                $o .= $this->_views->message(
-                    'success', sprintf($ptx['message_deleted'], $item)
-                );
-            } catch (Exception $x) {
-                $o .= $this->_views->message(
-                    'fail',
-                    sprintf($ptx['message_cant_write'], $this->_model->filename())
-                );
-            }
+            $this->_model->removeItem($item);
+            $o .= $this->_views->message(
+                'success', sprintf($ptx['message_deleted'], $item)
+            );
         }
         $o .= $this->_views->itemList($sn);
         return $o;
@@ -244,17 +228,10 @@ class Monorder_Controller
             && ($amount = trim(stsl($_POST['monorder_amount'])))
             && preg_match('/^[0-9]+$/', $amount)
         ) {
-            try {
-                $this->_model->setItemAmount($item, $amount);
-                $o .= $this->_views->message(
-                    'success', sprintf($ptx['message_saved'], $item)
-                );
-            } catch (Exception $ex) {
-                $o .= $this->_views->message(
-                    'fail',
-                    sprintf($ptx['message_cant_write'], $this->_model->filename())
-                );
-            }
+            $this->_model->setItemAmount($item, $amount);
+            $o .= $this->_views->message(
+                'success', sprintf($ptx['message_saved'], $item)
+            );
         }
         $o .= $this->_views->itemList($sn);
         return $o;
@@ -274,30 +251,34 @@ class Monorder_Controller
         global $o, $admin, $action;
 
         $o .= print_plugin_admin('on');
-        switch ($admin) {
-        case '':
-            $o .= $this->info();
-            break;
-        case 'plugin_main':
-            switch ($action) {
-            case 'edit_item':
-                $o .= $this->editItem();
+        try {
+            switch ($admin) {
+            case '':
+                $o .= $this->info();
                 break;
-            case 'save_item':
-                $o .= $this->saveItem();
-                break;
-            case 'new_event':
-                $o .= $this->newItem();
-                break;
-            case 'delete_event':
-                $o .= $this->deleteItem();
+            case 'plugin_main':
+                switch ($action) {
+                case 'edit_item':
+                    $o .= $this->editItem();
+                    break;
+                case 'save_item':
+                    $o .= $this->saveItem();
+                    break;
+                case 'new_event':
+                    $o .= $this->newItem();
+                    break;
+                case 'delete_event':
+                    $o .= $this->deleteItem();
+                    break;
+                default:
+                    $o .= $this->items();
+                }
                 break;
             default:
-                $o .= $this->items();
+                $o .= plugin_admin_common($action, $admin, 'monorder');
             }
-            break;
-        default:
-            $o .= plugin_admin_common($action, $admin, 'monorder');
+        } catch (Monorder_Exception $ex) {
+            $o .= $this->_views->message('fail', $ex->getMessage());
         }
     }
 
@@ -332,19 +313,10 @@ class Monorder_Controller
         global $plugin_tx;
 
         $ptx = $plugin_tx['monorder'];
-        try {
-            if ($this->_model->reserve($this->_currentItem, $amount)) {
-                $result = true;
-            } else {
-                $result = $ptx['avail_not_enough'];
-            }
-        } catch (RuntimeException $ex) {
-            if (XH_ADM) {
-                $name = $this->_model->filename();
-            } else {
-                $name = $this->_currentItem;
-            }
-            $result = sprintf($ptx['message_cant_write'], $name);
+        if ($this->_model->reserve($this->_currentItem, $amount)) {
+            $result = true;
+        } else {
+            $result = $ptx['avail_not_enough'];
         }
         return $result;
     }
@@ -368,7 +340,11 @@ class Monorder_Controller
      */
     public function inventory($item)
     {
-        return $this->_views->inventory($item);
+        try {
+            return $this->_views->inventory($item);
+        } catch (Monorder_Exception $ex) {
+            return $this->_views->message('fail', $ex->getMessage());
+        }
     }
 
     /**
@@ -388,26 +364,30 @@ class Monorder_Controller
     {
         global $pth, $plugin_tx;
 
-        $ptx = $plugin_tx['monorder'];
-        if (!isset($this->_currentItem)) {
-            $this->_currentItem = $itemName;
-        } else {
-            return '<p>ERROROROROOR</p>';
-        }
-        if (($amountBefore = $this->_model->availableAmountOf($itemName)) > 0) {
-            include_once $pth['folder']['plugins'] . 'monorder/advancedform.php';
-            $o = advancedform($formName);
-            if ($this->_model->reservationInProgress()) {
-                $this->_model->rollbackReservation();
+        try {
+            $ptx = $plugin_tx['monorder'];
+            if (!isset($this->_currentItem)) {
+                $this->_currentItem = $itemName;
+            } else {
+                return '<p>ERROROROROOR</p>';
             }
-            $this->_model->clearCache();
-            $amountAfter = $this->_model->availableAmountOf($itemName);
-            if ($amountAfter == $amountBefore) {
-                $o = $this->_views->inventory($itemName) . $o;
+            if (($amountBefore = $this->_model->availableAmountOf($itemName)) > 0) {
+                include_once $pth['folder']['plugins'] . 'monorder/advancedform.php';
+                $o = advancedform($formName);
+                if ($this->_model->reservationInProgress()) {
+                    $this->_model->rollbackReservation();
+                }
+                $this->_model->clearCache();
+                $amountAfter = $this->_model->availableAmountOf($itemName);
+                if ($amountAfter == $amountBefore) {
+                    $o = $this->_views->inventory($itemName) . $o;
+                }
+                return $o;
+            } else {
+                return $ptx['avail_zero'];
             }
-            return $o;
-        } else {
-            return $ptx['avail_zero'];
+        } catch (Monorder_Exception $ex) {
+            return $this->_views->message('fail', $ex->getMessage());
         }
     }
 }

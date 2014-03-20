@@ -130,9 +130,13 @@ class Monorder_Model
      * @return void
      *
      * @throws RuntimeException
+     *
+     * @global array The localization of the plugins.
      */
     protected function createDataFile()
     {
+        global $plugin_tx;
+
         $foldername = dirname($this->_filename);
         if (!file_exists($foldername)) {
             mkdir($foldername, 0777, true);
@@ -146,7 +150,12 @@ class Monorder_Model
             flock($stream, LOCK_UN);
             fclose($stream);
         } else {
-            throw new RuntimeException("Can't write {$this->_filename}", 2);
+            throw new Monorder_Exception(
+                sprintf(
+                    $plugin_tx['monorder']['message_cant_write'],
+                    $this->_filename
+                )
+            );
         }
     }
 
@@ -166,22 +175,36 @@ class Monorder_Model
      * @return array
      *
      * @throws RuntimeException
+     *
+     * @global array The localization of the plugins.
      */
     public function items()
     {
+        global $plugin_tx;
+
         if (!isset($this->_items)) {
             $stream = fopen($this->_filename, 'r');
             if ($stream) {
                 flock($stream, LOCK_SH);
                 $this->_items = unserialize(stream_get_contents($stream));
                 if ($this->_items === false) {
-                    throw new RuntimeException("Can't read {$this->_filename}", 1);
+                    throw new Monorder_Exception(
+                        sprintf(
+                            $plugin_tx['monorder']['message_cant_read'],
+                            $this->_filename
+                        )
+                    );
                 }
                 ksort($this->_items);
                 flock($stream, LOCK_UN);
                 fclose($stream);
             } else {
-                throw new RuntimeException("Can't read {$this->_filename}", 1);
+                throw new Monorder_Exception(
+                    sprintf(
+                        $plugin_tx['monorder']['message_cant_read'],
+                        $this->_filename
+                    )
+                );
             }
         }
         return $this->_items;
@@ -235,9 +258,13 @@ class Monorder_Model
      * @return void
      *
      * @throws RuntimeException
+     *
+     * @global array The localization of the plugins.
      */
     protected function modify($modifier)
     {
+        global $plugin_tx;
+
         $stream = fopen($this->_filename, 'r+');
         if ($stream) {
             flock($stream, LOCK_EX);
@@ -249,7 +276,12 @@ class Monorder_Model
             flock($stream, LOCK_UN);
             fclose($stream);
         } else {
-            throw new RuntimeException("Can't write {$this->_filename}", 2);
+            throw new Monorder_Exception(
+                sprintf(
+                    $plugin_tx['monorder']['message_cant_write'],
+                    $this->_filename
+                )
+            );
         }
     }
 
@@ -332,9 +364,13 @@ class Monorder_Model
      * @return bool
      *
      * @throws RuntimeException
+     *
+     * @global array The localization of the plugins.
      */
     public function reserve($item, $amount)
     {
+        global $plugin_tx;
+
         assert($this->hasItem($item));
         assert($amount > 0);
 
@@ -352,7 +388,12 @@ class Monorder_Model
                 $this->_stream = null;
             }
         } else {
-            throw new RuntimeException("Can't write {$this->_filename}", 2);
+            throw new Monorder_Exception(
+                sprintf(
+                    $plugin_tx['monorder']['message_cant_write'],
+                    $this->_filename
+                )
+            );
         }
         return $result;
     }
