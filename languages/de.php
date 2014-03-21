@@ -34,6 +34,7 @@ $plugin_tx['monorder']['syscheck_encoding']="UTF-8 Kodierung eingestellt";
 $plugin_tx['monorder']['syscheck_magic_quotes']="magic_quotes_runtime Off";
 $plugin_tx['monorder']['syscheck_writable']="Ordner \"%s\" beschreibbar";
 
+$plugin_tx['monorder']['info_title']="Info";
 $plugin_tx['monorder']['info_about']="Über Monorder_XH";
 
 $plugin_tx['monorder']['alt_logo']="Bestellformular";

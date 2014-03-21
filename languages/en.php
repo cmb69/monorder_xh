@@ -22,6 +22,7 @@ $plugin_tx['monorder']['message_cant_read']="\"%s\" couldn't be read.";
 $plugin_tx['monorder']['message_cant_write']="\"%s\" couldn't be written.";
 $plugin_tx['monorder']['message_wrong_item']="You can't order this item with this form!";
 $plugin_tx['monorder']['message_once_only']="Monorder_form() must not be called more than once on a single page!";
+$plugin_tx['monorder']['message_unknown_item']="The item \"%s\" doesn't exist!";
 
 $plugin_tx['monorder']['synopsis_title']="Synopsis";
 $plugin_tx['monorder']['synopsis_form_name']="FORM_NAME";
@@ -34,6 +35,7 @@ $plugin_tx['monorder']['syscheck_encoding']="UTF-8 encoding configured";
 $plugin_tx['monorder']['syscheck_magic_quotes']="magic_quotes_runtime Off";
 $plugin_tx['monorder']['syscheck_writable']="Folder \"%s\" writable";
 
+$plugin_tx['monorder']['info_title']="Info";
 $plugin_tx['monorder']['info_about']="About Monorder_XH";
 
 $plugin_tx['monorder']['alt_logo']="Order form";

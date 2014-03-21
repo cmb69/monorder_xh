@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Front-end functionality of Monorder_XH.
+ * Main of Monorder_XH.
  *
  * PHP version 5
  *

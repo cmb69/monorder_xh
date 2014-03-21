@@ -110,9 +110,12 @@ class Monorder_Controller
      *
      * @return string (X)HTML.
      */
-    public function info()
+    protected function info()
     {
-        return '<h1>Monorder &ndash; Info</h1>'
+        global $plugin_tx;
+
+        $ptx = $plugin_tx['monorder'];
+        return $this->_views->administrationHeading($ptx['info_title'])
             . $this->_views->synopsis()
             . $this->_views->systemCheck($this->systemChecks())
             . $this->_views->about();
@@ -347,9 +350,18 @@ class Monorder_Controller
      */
     public function inventory($item)
     {
+        global $plugin_tx;
+
+        $ptx = $plugin_tx['monorder'];
         try {
             $item = html_entity_decode($item, ENT_COMPAT, 'UTF-8');
-            return $this->_views->inventory($item);
+            if ($this->_model->hasItem($item)) {
+                return $this->_views->inventory($item);
+            } else {
+                return $this->_views->message(
+                    'fail', sprintf($ptx['message_unknown_item'], $item)
+                );
+            }
         } catch (Monorder_Exception $ex) {
             return $this->_views->message('fail', $ex->getMessage());
         }
@@ -377,6 +389,11 @@ class Monorder_Controller
                 $this->_currentItem = $itemName;
             } else {
                 return $this->_views->message('fail', $ptx['message_once_only']);
+            }
+            if (!$this->_model->hasItem($itemName)) {
+                return $this->_views->message(
+                    'fail', sprintf($ptx['message_unknown_item'], $itemName)
+                );
             }
             if (($amountBefore = $this->_model->availableAmountOf($itemName)) > 0) {
                 include_once $pth['folder']['plugins'] . 'monorder/advancedform.php';
