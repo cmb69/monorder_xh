@@ -341,6 +341,7 @@ class Monorder_Controller
     public function inventory($item)
     {
         try {
+            $item = html_entity_decode($item, ENT_COMPAT, 'UTF-8');
             return $this->_views->inventory($item);
         } catch (Monorder_Exception $ex) {
             return $this->_views->message('fail', $ex->getMessage());
@@ -364,6 +365,7 @@ class Monorder_Controller
 
         try {
             $ptx = $plugin_tx['monorder'];
+            $itemName = html_entity_decode($itemName, ENT_COMPAT, 'UTF-8');
             if (!isset($this->_currentItem)) {
                 $this->_currentItem = $itemName;
             } else {

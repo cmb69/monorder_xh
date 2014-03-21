@@ -43,6 +43,22 @@ class Monorder_Views
     }
 
     /**
+     * Returns a string with all special HTML characters encoded as entities.
+     *
+     * @param string $string A string.
+     *
+     * @return string
+     */
+    protected function hsc($string)
+    {
+        if (function_exists('XH_hsc')) {
+            return XH_hsc($string);
+        } else {
+            return htmlspecialchars($string, ENT_COMPAT, 'UTF-8');
+        }
+    }
+
+    /**
      * Returns a string with ETAGCs adjusted to the configured markup language.
      *
      * @param string $string A string.
@@ -230,15 +246,16 @@ EOT;
         global $plugin_tx;
 
         $ptx = $plugin_tx['monorder'];
-        $href = $scriptName . '?monorder&amp;admin=plugin_main'
-            . '&amp;action=edit_item&amp;monorder_item=' . $item;
-        $action = $scriptName . '?monorder&amp;admin=plugin_main'
-            . '&amp;action=delete_event';
-        $message = htmlspecialchars(
-            addcslashes($ptx['message_delete'], "\r\n'"),
-            ENT_COMPAT, 'UTF-8'
+        $href = $this->hsc(
+            $scriptName . '?monorder&admin=plugin_main&action=edit_item'
+            . '&monorder_item=' . urlencode($item)
         );
-        $onsubmit = 'return window.confirm(\'' . $message . '\')';
+        $action = $this->hsc(
+            $scriptName . '?monorder&admin=plugin_main&action=delete_event'
+        );
+        $message = addcslashes($ptx['message_delete'], "\r\n'");
+        $onsubmit = $this->hsc("return window.confirm('$message')");
+        $item = $this->hsc($item);
         return <<<EOT
 <li>
     <form class="monorder_delete" action="$action" method="post"
@@ -304,9 +321,12 @@ EOT;
         global $plugin_tx;
 
         $ptx = $plugin_tx['monorder'];
-        $action = $scriptName . '?monorder&amp;admin=plugin_main'
-            . '&amp;action=save_item&amp;monorder_item=' . $item;
+        $action = $this->hsc(
+            $scriptName . '?monorder&admin=plugin_main&action=save_item'
+            . '&monorder_item=' . urlencode($item)
+        );
         $amount = $this->_model->availableAmountOf($item);
+        $item = $this->hsc($item);
         $o = <<<EOT
 <h1>Monorder &ndash; $item</h1>
 <form action="$action" method="post">
