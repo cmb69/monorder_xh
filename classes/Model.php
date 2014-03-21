@@ -323,6 +323,7 @@ class Monorder_Model
      */
     public function addItem($name)
     {
+        assert($name != '');
         assert(!$this->hasItem($name));
 
         $this->setItemAmount($name, 0);

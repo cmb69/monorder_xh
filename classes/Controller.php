@@ -151,8 +151,8 @@ class Monorder_Controller
         if (isset($_POST['monorder_item'])) {
             $_XH_csrfProtection->check();
             $item = trim(stsl($_POST['monorder_item']));
-            if (!$this->_model->hasItem($item)) {
-                $this->_model->setItemAmount($item, 0);
+            if ($item != '' && !$this->_model->hasItem($item)) {
+                $this->_model->addItem($item);
                 $o = $this->_views->administrationHeading($item);
                 $o .= $this->_views->message(
                     'success', sprintf($ptx['message_saved'], $item)
