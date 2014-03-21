@@ -139,29 +139,32 @@ class Monorder_Controller
      *
      * @return string (X)HTML.
      *
-     * @global string The script name.
-     * @global array  The localization of the plugins.
+     * @global string            The script name.
+     * @global array             The localization of the plugins.
+     * @global XH_CSRFProtection The CSRF protector.
      */
     protected function newItem()
     {
-        global $sn, $plugin_tx;
+        global $sn, $plugin_tx, $_XH_csrfProtection;
 
         $ptx = $plugin_tx['monorder'];
-        if (isset($_POST['monorder_item'])
-            && ($item = trim(stsl($_POST['monorder_item'])))
-            && !$this->_model->hasItem($item)
-        ) {
-            $this->_model->setItemAmount($item, 0);
-            $o = $this->_views->administrationHeading($item);
-            $o .= $this->_views->message(
-                'success', sprintf($ptx['message_saved'], $item)
-            );
-            $o .= $this->_views->itemForm($item, $sn);
+        if (isset($_POST['monorder_item'])) {
+            $_XH_csrfProtection->check();
+            $item = trim(stsl($_POST['monorder_item']));
+            if (!$this->_model->hasItem($item)) {
+                $this->_model->setItemAmount($item, 0);
+                $o = $this->_views->administrationHeading($item);
+                $o .= $this->_views->message(
+                    'success', sprintf($ptx['message_saved'], $item)
+                );
+                $o .= $this->_views->itemForm($item, $sn);
+                return $o;
+            } else {
+                return $this->items($sn);
+            }
         } else {
-            $o = $this->_views->administrationHeading($ptx['label_items']);
-            $o .= $this->_views->itemList($sn);
+            return $this->items($sn);
         }
-        return $o;
     }
 
     /**
@@ -169,23 +172,25 @@ class Monorder_Controller
      *
      * @return string (X)HTML.
      *
-     * @global string The script name.
-     * @global array  The localization of the plugins.
+     * @global string            The script name.
+     * @global array             The localization of the plugins.
+     * @global XH_CSRFProtection The CSRF protector.
      */
     protected function deleteItem()
     {
-        global $sn, $plugin_tx;
+        global $sn, $plugin_tx, $_XH_csrfProtection;
 
         $ptx = $plugin_tx['monorder'];
         $o = $this->_views->administrationHeading($ptx['label_items']);
-        if (isset($_POST['monorder_item'])
-            && ($item = stsl($_POST['monorder_item']))
-            && $this->_model->hasItem($item)
-        ) {
-            $this->_model->removeItem($item);
-            $o .= $this->_views->message(
-                'success', sprintf($ptx['message_deleted'], $item)
-            );
+        if (isset($_POST['monorder_item'])) {
+            $_XH_csrfProtection->check();
+            $item = stsl($_POST['monorder_item']);
+            if ($this->_model->hasItem($item)) {
+                $this->_model->removeItem($item);
+                $o .= $this->_views->message(
+                    'success', sprintf($ptx['message_deleted'], $item)
+                );
+            }
         }
         $o .= $this->_views->itemList($sn);
         return $o;
@@ -214,24 +219,26 @@ class Monorder_Controller
      *
      * @global string The script name.
      * @global array  The localization of the plugins.
+     * @global XH_CSRFProtection The CSRF protector.
      */
     protected function saveItem()
     {
-        global $sn, $plugin_tx;
+        global $sn, $plugin_tx, $_XH_csrfProtection;
 
         $ptx = $plugin_tx['monorder'];
         $o = $this->_views->administrationHeading($ptx['label_items']);
-        if (isset($_GET['monorder_item'])
-            && ($item = stsl($_GET['monorder_item']))
-            && $this->_model->hasItem($item)
-            && isset($_POST['monorder_amount'])
-            && ($amount = trim(stsl($_POST['monorder_amount'])))
-            && preg_match('/^[0-9]+$/', $amount)
-        ) {
-            $this->_model->setItemAmount($item, $amount);
-            $o .= $this->_views->message(
-                'success', sprintf($ptx['message_saved'], $item)
-            );
+        if (isset($_GET['monorder_item']) && isset($_POST['monorder_amount'])) {
+            $_XH_csrfProtection->check();
+            $item = stsl($_GET['monorder_item']);
+            $amount = trim(stsl($_POST['monorder_amount']));
+            if ($this->_model->hasItem($item)
+                && preg_match('/^[0-9]+$/', $amount)
+            ) {
+                $this->_model->setItemAmount($item, $amount);
+                $o .= $this->_views->message(
+                    'success', sprintf($ptx['message_saved'], $item)
+                );
+            }
         }
         $o .= $this->_views->itemList($sn);
         return $o;

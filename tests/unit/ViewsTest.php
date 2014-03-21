@@ -1,5 +1,6 @@
 <?php
 
+require_once '../../cmsimple/classes/CSRFProtection.php';
 require_once './classes/Model.php';
 require_once './classes/Views.php';
 
@@ -11,10 +12,15 @@ class ViewsTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        global $_XH_csrfProtection;
+
         $this->_model = $this->getMockBuilder('Monorder_Model')
             ->disableOriginalConstructor()
             ->getMock();
         $this->_subject = new Monorder_Views($this->_model);
+        $_XH_csrfProtection = $this->getMockBuilder('XH_CSRFProtection')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     public function dataForMessage()

@@ -240,11 +240,12 @@ EOT;
      *
      * @return string (X)HTML.
      *
-     * @global array  The localization of the plugins.
+     * @global array             The localization of the plugins.
+     * @global XH_CSRFProtection The CSRF protector.
      */
     protected function itemListItem($item, $scriptName)
     {
-        global $plugin_tx;
+        global $plugin_tx, $_XH_csrfProtection;
 
         $ptx = $plugin_tx['monorder'];
         $href = $this->hsc(
@@ -257,12 +258,14 @@ EOT;
         $message = addcslashes($ptx['message_delete'], "\r\n'");
         $onsubmit = $this->hsc("return window.confirm('$message')");
         $item = $this->hsc($item);
+        $tokenInput = $_XH_csrfProtection->tokenInput();
         return <<<EOT
 <li>
     <form class="monorder_delete" action="$action" method="post"
             onsubmit="$onsubmit">
         <input type="hidden" name="monorder_item" value="$item" />
         <button>$ptx[button_delete]</button>
+        $tokenInput
     </form>
     <a href="$href">$item</a>
 </li>
@@ -276,12 +279,13 @@ EOT;
      *
      * @return (X)HTML.
      *
-     * @global string The script name.
-     * @global array  The localization of the plugins.
+     * @global string            The script name.
+     * @global array             The localization of the plugins.
+     * @global XH_CSRFProtection The CSRF protector.
      */
     public function itemList($scriptName)
     {
-        global $plugin_tx;
+        global $plugin_tx, $_XH_csrfProtection;
 
         $ptx = $plugin_tx['monorder'];
         $action = $scriptName . '?monorder';
@@ -291,6 +295,7 @@ EOT;
             $listItems[] = $this->itemListItem($item, $scriptName);
         }
         $listItems = implode('', $listItems);
+        $tokenInput = $_XH_csrfProtection->tokenInput();
         $o = <<<EOT
 <ul>
     $listItems
@@ -300,6 +305,7 @@ EOT;
             <input type="hidden" name="action" value="new_event" />
             <button>$ptx[button_create]</button>
             <input type="text" name="monorder_item" />
+            $tokenInput
         </form>
     </li>
 </ul>
@@ -315,11 +321,12 @@ EOT;
      *
      * @return string (X)HTML.
      *
-     * @global array  The localization of the plugins.
+     * @global array             The localization of the plugins.
+     * @global XH_CSRFProtection The CSRF protector.
      */
     public function itemForm($item, $scriptName)
     {
-        global $plugin_tx;
+        global $plugin_tx, $_XH_csrfProtection;
 
         $ptx = $plugin_tx['monorder'];
         $action = $this->hsc(
@@ -328,6 +335,7 @@ EOT;
         );
         $amount = $this->_model->availableAmountOf($item);
         $item = $this->hsc($item);
+        $tokenInput = $_XH_csrfProtection->tokenInput();
         $o = <<<EOT
 <form action="$action" method="post">
     <p>
@@ -337,6 +345,7 @@ EOT;
         </label>
     </p>
     <button>$ptx[button_save]</button>
+    $tokenInput
 </form>
 EOT;
         return $this->xhtml($o);
