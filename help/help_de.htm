@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>Monorder_XH &ndash; Handbuch</title>
+<link rel="stylesheet" type="text/css" href="./stylesheet.css">
+</head>
+
+<body>
+
+<h1>Monorder_XH - ein CMSimple_XH Plugin</h1>
+<img src="../monorder.png" alt="Bestellformular"
+     style="width: 128px; height: 128px; float: left">
+<p>Monorder_XH ermöglicht die Platzierung von Bestell- oder
+Reservierungsformularen für einzelne Posten bzw. Veranstaltungen (daher der
+Name, der eine Kontraktion von "mono" und "order", engl. für Bestellung, ist)
+auf Ihrer Website. Bei Bestellungen bzw. Reservierungen werden dabei der
+verfügbare Bestand bzw. die freien Plätzen berücksichtigt, so dass Überbuchungen
+nicht möglich sind.</p>
+<p>Die Formulare müssen mit <a
+href="http://3-magi.net/de/?CMSimple_XH/Advancedform_XH">Advancedform_XH</a>
+erstellt werden, und es ist möglich ein einziges Formular für mehrere
+Verkaufsartikel bzw. Veranstaltungen zu verwenden. Allerdings kann höchstens ein
+Formular für einen einzigen Verkaufsartikel bzw. eine Veranstaltung pro
+Seite genutzt werden, so dass Sie ein Einkaufs- bzw. Reservierungsystem
+verwenden sollten, wenn Sie erweiterte Ansprüche haben.</p>
+<p>Abgesehen von seinem eigentlichen Verwendungszweck dient Monorder_XH auch
+zur Demonstration der Möglichkeiten und Beschränkungen der Verwendung von
+Advancedform_XHs Hook-System für maßgeschneiderte Plugins.</p>
+
+<ul id="nav">
+<li><a href="#notice">Wichtiger Hinweis</a></li>
+<li><a href="#requirements">Voraussetzungen</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#settings">Einstellungen</a></li>
+<li><a href="#usage">Verwendung</a>
+<ul>
+    <li><a href="#usage-formprep">Vorbereitung des Formulars</a></li>
+    <li><a href="#usage-itemprep">Vorbereitung der Posten</a></li>
+    <li><a href="#usage-display">Anzeige des Formulars</a></li>
+    <li><a href="#usage-inventory">Bestandsanzeige</a></li>
+</ul>
+</li>
+<!--<li><a href="#limitations">Beschränkungen</a></li>-->
+<li><a href="#license">Lizenz</a></li>
+<li><a href="#credits">Danksagung</a></li>
+</ul>
+
+<div id="body">
+
+<p><strong>Bitte lesen Sie diese Dokumentation <em>bevor</em> Sie auf Probleme
+stoßen!</strong></p>
+
+<h2 id="notice">Wichtiger Hinweis</h2>
+<p><strong>Monorder_XH konnte bisher noch nicht in diversen Umgebungen getestet
+werden. Es handelt sich um eine so genannte Beta Version. Vorsicht bei der
+Verwendung!</strong></p>
+<div class="toplink"><a href="#">zum Seitenanfang</a></div>
+
+<h2 id="requirements">Voraussetzungen</h2>
+<p>Monorder_XH ist ein Plugin für CMSimple_XH. Es benötigt eine UTF-8 kodierte
+Version, PHP &ge; 5.1 und Advancedform_XH.</p>
+<div class="toplink"><a href="#">zum Seitenanfang</a></div>
+
+<h2 id="installation">Installation</h2>
+<p>Die Installation erfolgt wie bei vielen anderen CMSimple_XH-Plugins auch. Im
+<a href="http://www.cmsimple-xh.org/wiki/doku.php/de:installation">CMSimple_XH
+Wiki</a> finden sie ausführliche Hinweise.</p>
+<ol>
+<li>Sichern Sie die Daten auf Ihrem Server.</li>
+<li>Entpacken Sie die ZIP-Datei auf Ihrem Computer.</li>
+<li>Laden Sie das gesamte Verzeichnis monorder/ auf Ihren Server in das
+plugins/ Verzeichnis von CMSimple_XH hoch.</li>
+<li>Vergeben Sie Schreibrechte für die Unterverzeichnisse css/, config/,
+languages/ und den Datenordner des Plugins.</li>
+<li>Schützen Sie den Daten-Ordner von Monorder_XH vor direktem Zugriff auf eine
+Weise, die Ihr Webserver unterstützt. .htaccess-Dateien für Apache Server sind
+bereits im voreingestellten Daten-Ordner enthalten.</li>
+<li>Navigieren Sie zur Administration von Monorder, und prüfen Sie, ob alle
+Voraussetzungen für den Betrieb erfüllt sind.</li>
+</ol>
+<div class="toplink"><a href="#">zum Seitenanfang</a></div>
+
+<h2 id="settings">Einstellungen</h2>
+<p>Die Konfiguration des Plugins erfolgt wie bei vielen anderen
+CMSimple_XH-Plugins auch im Administrationsbereich der Homepage. Wählen Sie
+Plugins &rarr; Monorder.</p>
+<p>Sie können die Original-Einstellungen von Monorder_XH unter "Konfiguration"
+ändern. Beim Überfahren der Hilfe-Icons mit der Maus werden Hinweise zu den
+Einstellungen angezeigt.</p>
+<p>Die Lokalisierung wird unter "Sprache" vorgenommen. Sie können die
+Zeichenketten in Ihre eigene Sprache übersetzen, oder sie entsprechend Ihren
+Anforderungen anpassen.</p>
+<p>Das Aussehen von Monorder_XH kann unter "Stylesheet" angepasst werden. </p>
+<div class="toplink"><a href="#">zum Seitenanfang</a></div>
+
+<h2 id="usage">Verwendung</h2>
+<p>Wie bereits in der Einleitung erwähnt kann Monorder_XH sowohl für Bestell-
+als auch für Reservierungsformulare verwendet werden &ndash; was das Plugin betrifft,
+sind beide Konzepte identisch, weshalb im folgenden der Begriff
+<em>Bestellungen</em> sich auch auf Reservierungen, der Begriff <em>Posten</em>
+sich auf Bestell- und Verkaufsartikel sowie auf Veranstaltungen und der Begriff
+<em>Menge</em> sich sowohl auf die Bestellmenge wie auch die Teilnehmerzahl
+einer Veranstaltung bezieht. Für Reservierungen sollten Sie die entsprechenden
+Begriffe in den Spracheinstellungen des Plugins ändern.</p>
+<div class="toplink"><a href="#">zum Seitenanfang</a></div>
+
+<h3 id="usage-formprep">Vorbereitung des Formulars</h3>
+<p>Zunächst müssen Sie das Bestellformular in der <a
+href="http://3-magi.net/plugins/advancedform/help/help_de.htm#usage-administration">Formular-Verwaltung</a>
+von Advancedform_XH vorbereiten. Die Besonderheit von Formularen, die mit
+Monorder_XH genutzt werden können, ist, dass sie ein Feld vom Typ "Zahl" oder
+"versteckt" mit dem Namen "order_amount" enthalten <em>müssen</em>, und ein Feld
+vom Typ "Text" oder "versteckt" mit dem Namen "order_item" enthalten
+<em>können</em> (beide Namen können in der Plugin-Konfiguration geändert werden,
+aber müssen für alle Formulare gleich sein).</p>
+<p>Beachten Sie, dass versteckte Felder nicht in der Bestätigungs-E-Mail
+enthalten sein werden, und dass eine Bestätigung nur versandt wird, wenn für das
+Formular eine Dank-Seite festgelegt wurde, und jenes ein Feld vom Typ "Absender
+(E-Mail)" enthält.</p>
+<p>Beachten Sie ebenfalls, dass sie zwar Advancedform_XHs <a
+href="http://3-magi.net/plugins/advancedform/help/help_de.htm#usage-templates">Vorlagen-System</a>,
+nicht aber das <a
+href="http://3-magi.net/plugins/advancedform/help/help_de.htm#usage-hooks">Hook-System</a>
+verwenden können, da dieses bereits hinter den Kulissen von Monorder_XH
+verwendet wird.</p>
+<p>Wenn Sie einen besseren Überblick über alle Bestellungen behalten wollen,
+können Sie die "Daten speichern" Option des Formulars aktivieren. Beachten Sie,
+dass alle Bestellungen durch dieses Formular unabhängig vom Posten in der selben
+CSV-Datei gespeichert werden. Um das aufzutrennen, können Sie die CSV-Datei
+zwischenzeitlich in eine Tabellenkalkulationssoftware importieren und deren
+Möglichkeiten nutzen.</p>
+<div class="toplink"><a href="#">zum Seitenanfang</a></div>
+
+<h3 id="usage-itemprep">Vorbereitung der Posten</h3>
+<p>Für jeden Posten, den Sie anbieten möchten, müssen Sie einen neuen Datensatz
+in der Administration von Monorder_XH anlegen und die verfügbare Menge angeben.
+Natürlich können Sie diese Menge jederzeit nach Bedarf ändern. Der Name des
+Postens wird nur intern verwendet, außer wenn Sie ein order_item Feld für das
+Formular definiert haben, in welchem Fall dessen Wert der Name des Postens sein
+wird. Daher ist es sinnvoll einen sprechenden Namen zu verwenden, wie z.B.
+"Gelbes CMSimple_XH T-Shirt XL" oder "CMSimple_XH Seminar, 2014-03-21".</p>
+<div class="toplink"><a href="#">zum Seitenanfang</a></div>
+
+<h3 id="usage-display">Anzeige des Formulars</h3>
+<p>Um ein Bestellformular auf einer Seite anzuzeigen, nutzen Sie folgenden
+Pluginaufruf:</p>
+<pre>{{{PLUGIN:Monorder_form('FORMULAR_NAME', 'POSTEN_NAME');}}}</pre>
+<p>wobei FORMULAR_NAME der Name des Advancedform_XH Formulars, und POSTEN_NAME
+der Name des Monorder_XH Postens ist, z.B.:</p>
+<pre>{{{PLUGIN:Monorder_form('Bestellung', 'Gelbes CMSimple_XH T-Shirt XL');}}}</pre>
+<p>Wenn sich Posten im Bestand befinden wird deren Anzahl oberhalb des Formulars
+angezeigt; andernfalls erfolgt eine Meldung, dass keine Posten mehr verfügbar
+sind, und das Formular wird überhaupt nicht angezeigt.</p>
+<p>Wenn ein Kunde das Formular abschickt, wird die Formularprüfung
+sicherstellen, dass die Bestellmenge von order_amount auch verfügbar ist, und
+dass der Wert von order_item nicht geändert wurde; andernfalls wird die E-Mail
+nicht verschickt. Wenn alles in Ordnung ist, wird die E-Mail verschickt und die
+Bestellmenge wird vom Bestand abgezogen.</p>
+<div class="toplink"><a href="#">zum Seitenanfang</a></div>
+
+<h3 id="usage-inventory">Bestandsanzeige</h3>
+<p>Wenn Sie möchten, können Sie die Bestandsmenge auf anderen Seiten (z.B. auf
+einer Übersichtsseite) anzeigen. Dazu verwenden Sie den folgenden
+Pluginaufruf:</p>
+<pre>{{{PLUGIN:Monorder_inventory('POSTEN_NAME');}}}</pre>
+<p>Beispiel:</p>
+<pre>{{{PLUGIN:Monorder_inventory('Gelbes CMSimple_XH T-Shirt XL');}}}</pre>
+<div class="toplink"><a href="#">zum Seitenanfang</a></div>
+
+<!--<h2><a name="limitations">Beschränkungen</a></h2>
+<div class="toplink"><a href="#">zum Seitenanfang</a></div>
+-->
+
+<h2 id="license">Lizenz</h2>
+<p>Monorder_XH kann unter Einhaltung der <a
+href="http://www.gnu.org/licenses/gpl.html">GPLv3</a> verwendet werden.</p>
+<p>&copy; 2014 Christoph M. Becker</p>
+<div class="toplink"><a href="#">zum Seitenanfang</a></div>
+
+<h2 id="credits">Danksagung</h2>
+<p>Diese Plugin wurde von Simmyne angeregt.</p>
+<p>Das Plugin-Icon wurde von <a
+href="http://www.freeiconsdownload.com/">Matt</a> gestaltet. Vielen
+Dank für die Veröffentlichung unter einer liberalen Lizenz.</p>
+<p>Diese Plugin verwendet "free applications icons" von <a
+href="http://www.aha-soft.com/">Aha-Soft</a>. Vielen Dank für die freie
+Verwendbarkeit dieser Icons.</p>
+<!--<p>Vielen Dank an die Gemeinschaft im <a-->
+<!--href="http://www.cmsimpleforum.com/">CMSimple_XH-Forum</a> für Tipps, Anregungen-->
+<!--und das Testen.</p>-->
+<p>Zu guter Letzt vielen Dank an <a href="http://harteg.dk/">Peter Harteg</a>,
+den "Vater" von CMSimple, und allen Entwicklern von <a
+href="http://www.cmsimple-xh.org/">CMSimple_XH</a>, ohne die dieses fantastische
+CMS nicht existieren würde.</p>
+<div class="toplink"><a href="#">zum Seitenanfang</a></div>
+
+</div>
+
+</body>
+
+</html>
