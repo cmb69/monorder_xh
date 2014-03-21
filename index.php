@@ -47,14 +47,18 @@ require_once $pth['folder']['plugin_classes'] . 'Controller.php';
  */
 define('MONORDER_VERSION', '@MONORDER_VERSION@');
 
-/**
- * The controller object.
- *
- * @var Monorder_Controller
- *
- * @todo Catch exception
- */
-$_Monorder = new Monorder_Controller();
+try {
+    /**
+     * The controller object.
+     *
+     * @var Monorder_Controller
+     *
+     * @todo Clean that up.
+     */
+    $_Monorder = new Monorder_Controller();
+} catch (Monorder_Exception $ex) {
+    die($ex->getMessage());
+}
 
 /**
  * Returns an inventory view.
