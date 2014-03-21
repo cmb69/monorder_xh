@@ -147,7 +147,6 @@ class Monorder_Controller
         global $sn, $plugin_tx;
 
         $ptx = $plugin_tx['monorder'];
-        $o = $this->_views->administrationHeading($ptx['label_items']);
         if (isset($_POST['monorder_item'])
             && ($item = trim(stsl($_POST['monorder_item'])))
             && !$this->_model->hasItem($item)
@@ -204,7 +203,8 @@ class Monorder_Controller
         global $sn;
 
         $item = stsl($_GET['monorder_item']);
-        return $this->_views->itemForm($item, $sn);
+        return $this->_views->administrationHeading($item)
+            . $this->_views->itemForm($item, $sn);
     }
 
     /**

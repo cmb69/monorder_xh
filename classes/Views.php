@@ -126,6 +126,7 @@ EOT;
      */
     public function administrationHeading($title)
     {
+        $title = $this->hsc($title);
         return <<<EOS
 <h1>Monorder &ndash; $title</h1>
 EOS;
@@ -328,7 +329,6 @@ EOT;
         $amount = $this->_model->availableAmountOf($item);
         $item = $this->hsc($item);
         $o = <<<EOT
-<h1>Monorder &ndash; $item</h1>
 <form action="$action" method="post">
     <p>
         <label>
