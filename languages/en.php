@@ -21,6 +21,7 @@ $plugin_tx['monorder']['message_deleted']="\"%s\" has been successfully deleted.
 $plugin_tx['monorder']['message_cant_read']="\"%s\" couldn't be read.";
 $plugin_tx['monorder']['message_cant_write']="\"%s\" couldn't be written.";
 $plugin_tx['monorder']['message_wrong_item']="You can't order this item with this form!";
+$plugin_tx['monorder']['message_once_only']="Monorder_form() must not be called more than once on a single page!";
 
 $plugin_tx['monorder']['synopsis_title']="Synopsis";
 $plugin_tx['monorder']['synopsis_form_name']="FORM_NAME";

@@ -357,8 +357,6 @@ class Monorder_Controller
      *
      * @global array The paths of system files and folders.
      * @global array The localization of the plugins.
-     *
-     * @todo Improve error message "ERRRORROOOR"
      */
     public function orderForm($formName, $itemName)
     {
@@ -369,7 +367,7 @@ class Monorder_Controller
             if (!isset($this->_currentItem)) {
                 $this->_currentItem = $itemName;
             } else {
-                return '<p>ERROROROROOR</p>';
+                return $this->_views->message('fail', $ptx['message_once_only']);
             }
             if (($amountBefore = $this->_model->availableAmountOf($itemName)) > 0) {
                 include_once $pth['folder']['plugins'] . 'monorder/advancedform.php';
