@@ -269,7 +269,7 @@ class Monorder_Model
         if ($stream) {
             flock($stream, LOCK_EX);
             $this->_items = unserialize(stream_get_contents($stream));
-            $modifier();
+            call_user_func($modifier);
             fseek($stream, 0);
             ftruncate($stream, 0);
             fwrite($stream, serialize($this->_items));
