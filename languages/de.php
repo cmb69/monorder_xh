@@ -15,6 +15,7 @@ $plugin_tx['monorder']['button_create']="Erzeugen";
 $plugin_tx['monorder']['button_delete']="Löschen";
 $plugin_tx['monorder']['button_save']="Speichern";
 
+$plugin_tx['monorder']['message_amount_field_missing']="Im Formular \"%FORM_NAME%\" fehlt das Feld \"%FIELD_NAME%\"!";
 $plugin_tx['monorder']['message_delete']="Dieser Posten wird unwiderruflich gelöscht!";
 $plugin_tx['monorder']['message_saved']="\"%s\" wurde erfolgreich gespeichert.";
 $plugin_tx['monorder']['message_deleted']="\"%s\" wurde erfolgreich gelöscht.";

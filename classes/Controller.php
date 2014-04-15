@@ -48,6 +48,14 @@ class Monorder_Controller
     private $_currentItem;
 
     /**
+     * Whether the sent form has an amount field. <var>null</var> means that the
+     * form has not been sent, so this field is irrelevant.
+     *
+     * @var bool
+     */
+    public $hadAmountField;
+
+    /**
      * Initializes a new instance.
      */
     public function __construct()
@@ -376,13 +384,15 @@ class Monorder_Controller
      * @return string (X)HTML.
      *
      * @global array The paths of system files and folders.
+     * @global array The configuration of the plugins.
      * @global array The localization of the plugins.
      */
     public function orderForm($formName, $itemName)
     {
-        global $pth, $plugin_tx;
+        global $pth, $plugin_cf, $plugin_tx;
 
         try {
+            $pcf = $plugin_cf['monorder'];
             $ptx = $plugin_tx['monorder'];
             $itemName = html_entity_decode($itemName, ENT_COMPAT, 'UTF-8');
             if (!isset($this->_currentItem)) {
@@ -397,7 +407,18 @@ class Monorder_Controller
             }
             if (($amountBefore = $this->_model->availableAmountOf($itemName)) > 0) {
                 include_once $pth['folder']['plugins'] . 'monorder/advancedform.php';
-                $o = advancedform($formName);
+                $this->hadAmountField = null;
+                $output = advancedform($formName);
+                if ($this->hadAmountField !== false) {
+                    $o = $output;
+                } else {
+                    $message = str_replace(
+                        array('%FORM_NAME%', '%FIELD_NAME%'),
+                        array($formName, $pcf['advancedform_amount_field']),
+                        $ptx['message_amount_field_missing']
+                    );
+                    $o = $this->_views->message('fail', $message);
+                }
                 if ($this->_model->reservationInProgress()) {
                     $this->_model->rollbackReservation();
                 }

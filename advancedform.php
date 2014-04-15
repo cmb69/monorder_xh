@@ -65,6 +65,7 @@ function advfrm_custom_valid_field($formName, $fieldName, $value)
         }
     case $plugin_cf['monorder']['advancedform_amount_field']:
         if (preg_match('/^[0-9]+$/', $value)) {
+            $_Monorder->hadAmountField = true;
             return $_Monorder->reserve($value);
         } else {
             // let Advancedform_XH report the appropriate error
@@ -91,6 +92,10 @@ function advfrm_custom_mail($formName, &$mail, $isConfirmation)
 {
     global $plugin_cf, $_Monorder;
 
+    if (!$_Monorder->hadAmountField) {
+        $_Monorder->hadAmountField = false;
+        return false;
+    }
     if (!$isConfirmation) {
         $_Monorder->commitReservation();
     }
