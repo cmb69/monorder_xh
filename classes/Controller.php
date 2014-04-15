@@ -150,17 +150,16 @@ class Monorder_Controller
      *
      * @return string (X)HTML.
      *
-     * @global string            The script name.
-     * @global array             The localization of the plugins.
-     * @global XH_CSRFProtection The CSRF protector.
+     * @global string The script name.
+     * @global array  The localization of the plugins.
      */
     protected function newItem()
     {
-        global $sn, $plugin_tx, $_XH_csrfProtection;
+        global $sn, $plugin_tx;
 
         $ptx = $plugin_tx['monorder'];
         if (isset($_POST['monorder_item'])) {
-            $_XH_csrfProtection->check();
+            $this->_checkHasValidCsrfToken();
             $item = trim(stsl($_POST['monorder_item']));
             if ($item != '' && !$this->_model->hasItem($item)) {
                 $this->_model->addItem($item);
@@ -183,18 +182,17 @@ class Monorder_Controller
      *
      * @return string (X)HTML.
      *
-     * @global string            The script name.
-     * @global array             The localization of the plugins.
-     * @global XH_CSRFProtection The CSRF protector.
+     * @global string The script name.
+     * @global array  The localization of the plugins.
      */
     protected function deleteItem()
     {
-        global $sn, $plugin_tx, $_XH_csrfProtection;
+        global $sn, $plugin_tx;
 
         $ptx = $plugin_tx['monorder'];
         $o = $this->_views->administrationHeading($ptx['label_items']);
         if (isset($_POST['monorder_item'])) {
-            $_XH_csrfProtection->check();
+            $this->_checkHasValidCsrfToken();
             $item = stsl($_POST['monorder_item']);
             if ($this->_model->hasItem($item)) {
                 $this->_model->removeItem($item);
@@ -230,16 +228,15 @@ class Monorder_Controller
      *
      * @global string The script name.
      * @global array  The localization of the plugins.
-     * @global XH_CSRFProtection The CSRF protector.
      */
     protected function saveItem()
     {
-        global $sn, $plugin_tx, $_XH_csrfProtection;
+        global $sn, $plugin_tx;
 
         $ptx = $plugin_tx['monorder'];
         $o = $this->_views->administrationHeading($ptx['label_items']);
         if (isset($_GET['monorder_item']) && isset($_POST['monorder_amount'])) {
-            $_XH_csrfProtection->check();
+            $this->_checkHasValidCsrfToken();
             $item = stsl($_GET['monorder_item']);
             $amount = trim(stsl($_POST['monorder_amount']));
             if ($this->_model->hasItem($item)
@@ -253,6 +250,22 @@ class Monorder_Controller
         }
         $o .= $this->_views->itemList($sn);
         return $o;
+    }
+
+    /**
+     * Checks whether the CSRF token is valid, if CSRF protection is available.
+     *
+     * @return void
+     *
+     * @global XH_CSRFProtection The CSRF protector.
+     */
+    private function _checkHasValidCsrfToken()
+    {
+        global $_XH_csrfProtection;
+
+        if (isset($_XH_csrfProtection)) {
+            $_XH_csrfProtection->check();
+        }
     }
 
     /**
