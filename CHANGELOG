@@ -1,2 +1,8 @@
+Version 1.0rc1 - released 2014-04-15
+* fixed bug, where a fatal error occured on older PHP versions (reported by
+  Simmyne)
+* removed unintentional requirement on CSRF protection
+* added check whether the form has an amount_field (inspired by Simmyne)
+
 Version 1.0beta1 - released 2014-03-21
 * initial release
