@@ -1,3 +1,7 @@
+Version 1.0 - released 2014-07-01
+* fixed vulnerability under unsupported CMSimple_XH versions, where the plugin
+  administration didn't require authentication
+
 Version 1.0rc1 - released 2014-04-15
 * fixed bug, where a fatal error occured on older PHP versions (reported by
   Simmyne)
