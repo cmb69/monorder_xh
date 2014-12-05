@@ -99,7 +99,6 @@
         <move todir="dist">
             <fileset dir="export">
                 <exclude name="tests/**"/>
-                <exclude name="monorder.komodoproject"/>
                 <exclude name="build.xml"/>
                 <exclude name="coverage.xml"/>
                 <exclude name="phpcompatinfo.xml"/>
