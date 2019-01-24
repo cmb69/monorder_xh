@@ -89,17 +89,6 @@
         <delete file="export.zip"/>
         <move todir="dist">
             <fileset dir="export">
-                <include name="index.php"/>
-                <include name="version.nfo"/>
-            </fileset>
-            <filterchain>
-                <replacetokens>
-                    <token key="MONORDER_VERSION" value="${version}"/>
-                </replacetokens>
-            </filterchain>
-        </move>
-        <move todir="dist">
-            <fileset dir="export">
                 <exclude name="tests/**"/>
                 <exclude name="build.xml"/>
                 <exclude name="composer.json"/>
