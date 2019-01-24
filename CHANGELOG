@@ -1,3 +1,6 @@
+Version 1.1 – released 2019-01-24
+* see <https://github.com/cmb69/monorder_xh/milestone/1?closed=1>
+
 Version 1.0 - released 2014-07-01
 * fixed vulnerability under unsupported CMSimple_XH versions, where the plugin
   administration didn't require authentication

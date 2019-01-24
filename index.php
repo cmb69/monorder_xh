@@ -53,7 +53,7 @@ require_once $pth['folder']['plugin_classes'] . 'Controller.php';
 /**
  * The plugin version.
  */
-define('MONORDER_VERSION', '1.0');
+define('MONORDER_VERSION', '1.1');
 
 try {
     /**
