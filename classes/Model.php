@@ -140,6 +140,7 @@ class Monorder_Model
         $foldername = dirname($this->_filename);
         if (!file_exists($foldername)) {
             mkdir($foldername, 0777, true);
+            chmod($foldername, 0777);
         }
         $stream = fopen($this->_filename, 'a');
         if ($stream) {
