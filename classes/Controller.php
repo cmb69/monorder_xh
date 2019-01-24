@@ -324,7 +324,10 @@ class Monorder_Controller
     {
         global $monorder;
 
-        if (XH_ADM && isset($monorder) && $monorder == 'true') {
+        if (XH_ADM 
+            && (function_exists('XH_wantsPluginAdministration') && XH_wantsPluginAdministration('monorder')
+            || isset($monorder) && $monorder == 'true')
+        ) {
             $this->handleAdministration();
         }
     }
