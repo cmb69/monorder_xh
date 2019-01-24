@@ -84,7 +84,9 @@
 
     <target name="build">
         <fail unless="version" message="version is not defined!"/>
-        <svnexport revision="" repositoryurl="." todir="export"/>
+        <exec command="git archive -o export.zip HEAD" checkreturn="true"/>
+        <unzip file="export.zip" todir="export"/>
+        <delete file="export.zip"/>
         <move todir="dist">
             <fileset dir="export">
                 <include name="index.php"/>
