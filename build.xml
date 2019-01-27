@@ -4,10 +4,6 @@
 
 <project name="Monorder" default="default">
 
-    <!-- Properties -->
-
-    <property name="styledir" value="C:\xampp\php\data\phing\etc"/>
-
     <!-- Filesets -->
 
     <fileset id="php-sources" dir=".">
