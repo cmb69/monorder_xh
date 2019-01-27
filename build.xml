@@ -26,7 +26,7 @@
     </target>
 
     <target name="compat" description="checks compatibility with PHP CompatInfo">
-        <exec command="phpcompatinfo --configuration phpcompatinfo.xml print --exclude-pattern monorder ."
+        <exec command="phpcompatinfo analyser:run --alias current"
               logoutput="true"/>
     </target>
 
@@ -74,7 +74,7 @@
                 <exclude name="build.xml"/>
                 <exclude name="composer.json"/>
                 <exclude name="coverage.xml"/>
-                <exclude name="phpcompatinfo.xml"/>
+                <exclude name="phpcompatinfo.json"/>
             </fileset>
         </move>
         <delete dir="export"/>
