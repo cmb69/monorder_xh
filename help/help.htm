@@ -1,183 +1,98 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<meta http-equiv="content-type" content="text/html;charset=utf-8">
-<title>Monorder_XH &ndash; Manual</title>
-<link rel="stylesheet" type="text/css" href="./stylesheet.css">
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Monorder_XH – User Manual</title>
+  <style type="text/css">
+    body {
+        font-family: Georgia, serif;
+        line-height: 1.5;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+        background: #ffffe1;
+        max-width: 40em;
+    }
+    p {
+        text-align: justify;
+    }
+    pre {
+        color: black;
+        background: #ffe;
+        overflow: auto;
+        padding: 0.2em 0.5em;
+        border: 1px solid silver;
+    }
+  </style>
 </head>
-
 <body>
-
-<h1>Monorder_XH - a CMSimple_XH Plugin</h1>
-<img src="../monorder.png" alt="Order form"
-     style="width: 128px; height: 128px; float: left">
-<p>Monorder_XH facilitates placing order or reservation forms for single items
-resp. events (hence the name which is a synaeresis of "mono" and "order") on
-your website. Ordering resp. booking takes in account the number of items on
-stock resp. the free places, so overbooking is not possible.</p>
-<p>The forms have to be created with <a
-href="http://3-magi.net/?CMSimple_XH/Advancedform_XH">Advancedform_XH</a>, and
-it is possible to use a single form for multiple sales items resp. events.
-However, it is only possible to offer one form for a particular item resp. event
-on each page, so if you have more demanding needs use a shopping resp. a
-booking system.</p>
-<p>Besides its actual use, Monorder_XH serves to demonstrate the possibilities
-and limitations of using Advancedform_XH's hook system for custom plugins.</p>
-
-<ul id="nav">
+<h1 id="monorder_xh">Monorder_XH</h1>
+<p>Monorder_XH facilitates placing order or reservation forms for single items resp. events (hence the name which is a synaeresis of “mono” and “order”) on your website. Ordering resp. booking takes in account the number of items on stock resp. the free places, so overbooking is not possible.</p>
+<p>The forms have to be created with <a href="https://github.com/cmb69/advancedform_xh">Advancedform_XH</a>, and it is possible to use a single form for multiple sales items resp. events. However, it is only possible to offer one form for a particular item resp. event on each page, so if you have more demanding needs use a shopping resp. a booking system.</p>
+<p>Besides its actual use, Monorder_XH serves to demonstrate the possibilities and limitations of using Advancedform_XH’s hook system for custom plugins.</p>
+<ul>
 <li><a href="#requirements">Requirements</a></li>
 <li><a href="#installation">Installation</a></li>
 <li><a href="#settings">Settings</a></li>
 <li><a href="#usage">Usage</a>
 <ul>
-    <li><a href="#usage-formprep">Form preparation</a></li>
-    <li><a href="#usage-itemprep">Item preparation</a></li>
-    <li><a href="#usage-display">Displaying the form</a></li>
-    <li><a href="#usage-inventory">Inventory</a></li>
-</ul>
-</li>
-<!--<li><a href="#limitations">Limitations</a></li>-->
+<li><a href="#form-preparation">Form preparation</a></li>
+<li><a href="#item-preparation">Item preparation</a></li>
+<li><a href="#displaying-the-form">Displaying the form</a></li>
+<li><a href="#inventory">Inventory</a></li>
+</ul></li>
 <li><a href="#license">License</a></li>
 <li><a href="#credits">Credits</a></li>
 </ul>
-
-<div id="body">
-
-<p><strong>Please do read this documentation, <em>before</em> you encounter any
-problems!</strong></p>
-
 <h2 id="requirements">Requirements</h2>
-<p>Monorder_XH is a plugin for CMSimple_XH. It requires CMSimple_XH &ge; 1.5.4,
-PHP &ge; 5.1 and Advancedform_XH.</p>
-<div class="toplink"><a href="#">back to top</a></div>
-
+<p>Monorder_XH is a plugin for CMSimple_XH ≥ 1.5.4, PHP ≥ 5.1 and Advancedform_XH.</p>
 <h2 id="installation">Installation</h2>
-<p>The installation is done as with many other CMSimple_XH plugins.
-See the <a href="http://www.cmsimple-xh.org/wiki/doku.php/installation">
-CMSimple_XH wiki</a> for further details.</p>
-<ol>
+<p>The installation is done as with many other CMSimple_XH plugins. See the <a href="https://wiki.cmsimple-xh.org/doku.php/installation">CMSimple_XH wiki</a> for further details.</p>
+<ol type="1">
 <li>Backup the data on your server.</li>
 <li>Unzip the distribution on your computer.</li>
-<li>Upload the whole directory monorder/ to your server into CMSimple_XH's
-plugins/ directory.</li>
-<li>Set write permissions to the subdirectories css/, config/, languages/ and
-the plugin's data folder.</li>
-<li>Protect Monorder_XH's data folder against direct access by any means your
-webserver provides. .htaccess files for Apache servers are already placed
-in the default data folder.</li>
-<li>Browse to Monorder_XH's administration to check if all requirements are
-fulfilled.</li>
+<li>Upload the whole directory monorder/ to your server into CMSimple_XH’s plugins/ directory.</li>
+<li>Set write permissions to the subdirectories css/, config/, languages/ and the plugin’s data folder.</li>
+<li>Protect Monorder_XH’s data folder against direct access by any means your webserver provides. .htaccess files for Apache servers are already placed in the default data folder.</li>
+<li>Browse to Monorder_XH’s administration to check if all requirements are fulfilled.</li>
 </ol>
-<div class="toplink"><a href="#">back to top</a></div>
-
 <h2 id="settings">Settings</h2>
-<p>The plugin's configuration is done as with many other CMSimple_XH plugins in
-the website's back-end. Select Plugins &rarr; Monorder.</p>
-<p>You can change the default settings of Monorder_XH under "Config". Hints
-for the options will be displayed when hovering over the help icon with your
-mouse.</p>
-<p>Localization is done under "Language". You can translate the character
-strings to your own language, or customize them according to your needs.</p>
-<p>The look of the Monorder_XH can be customized under "Stylesheet".</p>
-<div class="toplink"><a href="#">back to top</a></div>
-
+<p>The plugin’s configuration is done as with many other CMSimple_XH plugins in the website’s back-end. Select Plugins → Monorder.</p>
+<p>You can change the default settings of Monorder_XH under “Config”. Hints for the options will be displayed when hovering over the help icon with your mouse.</p>
+<p>Localization is done under “Language”. You can translate the character strings to your own language, or customize them according to your needs.</p>
+<p>The look of the Monorder_XH can be customized under “Stylesheet”.</p>
 <h2 id="usage">Usage</h2>
-<p>As already mentioned in the introduction Monorder_XH can be used for order
-forms as well as reservation forms&mdash;with regard to the plugin these
-concepts are identical, so in the following the term <em>orders</em> refers to
-reservations as well, the term <em>item</em> refers to order or sales items as
-well as events, and the term <em>amount</em> refers to the order amount as well
-as the attendance of an event. For reservation purposes you should change the
-respective terms in the language settings of the plugin.</p>
-<div class="toplink"><a href="#">back to top</a></div>
-
-<h3 id="usage-formprep">Form preparation</h3>
-<p>At first you have to prepare the order form in the <a
-href="http://3-magi.net/plugins/advancedform/help/help.htm#usage-administration">mail
-form administration</a> of Advancedform_XH. The characteristic of forms usable
-with Monorder_XH is that they <em>must</em> contain a numeric or hidden field
-with the name "order_amount", and that they <em>can</em> contain a text or
-hidden field with the name "order_item" (both names can be changed in the
-configuration of the plugin, but must be the same for all forms).</p>
-<p>Note, that hidden fields will not be contained in the confirmation mail, and
-that a confirmation will only be sent, if there is a thanks page defined for the
-form and it contains a field of type "Sender (e-mail)".</p>
-<p>Further note, that while you can use Advancedform_XH's <a
-href="http://3-magi.net/plugins/advancedform/help/help.htm#usage-templates">template
-system</a> for Monorder_XH forms, you cannot use the <a
-href="http://3-magi.net/plugins/advancedform/help/help.htm#usage-hooks">hook
-system</a>, as this is already used by Monorder_XH behind the scenes.</p>
-<p>If you want to keep a better overview of all orders, you can activate the
-"store data" option of the form. Note, that all orders made via this form will
-be stored in the same CSV file independent of the item. To sort that out you can
-temporarily import the CSV file to a spreadsheet software and use its
-capabilities.</p>
-<div class="toplink"><a href="#">back to top</a></div>
-
-<h3 id="usage-itemprep">Item preparation</h3>
-<p>For each item you want to offer you have to create a new record in the
-administration of Monorder_XH and you have to specify its available amount. Of
-course, you can adjust this amount anytime as appropriate. The name of the item
-is only for internal use, unless you have placed an order_item field on your
-form, in which case its value will be the name of the item. So it is sensible to
-use a speaking name, such as "Yellow CMSimple_XH T-shirt XL" or "CMSimple_XH
-seminar, 2014-03-21".</p>
-<div class="toplink"><a href="#">back to top</a></div>
-
-<h3 id="usage-display">Displaying the form</h3>
+<p>As already mentioned in the introduction Monorder_XH can be used for order forms as well as reservation forms—with regard to the plugin these concepts are identical, so in the following the term <em>orders</em> refers to reservations as well, the term <em>item</em> refers to order or sales items as well as events, and the term <em>amount</em> refers to the order amount as well as the attendance of an event. For reservation purposes you should change the respective terms in the language settings of the plugin.</p>
+<h3 id="form-preparation">Form preparation</h3>
+<p>At first you have to prepare the order form in the mail form administration of Advancedform_XH. The characteristic of forms usable with Monorder_XH is that they <em>must</em> contain a numeric or hidden field with the name “order_amount”, and that they <em>can</em> contain a text or hidden field with the name “order_item” (both names can be changed in the configuration of the plugin, but must be the same for all forms).</p>
+<p>Note, that hidden fields will not be contained in the confirmation mail, and that a confirmation will only be sent, if there is a thanks page defined for the form and it contains a field of type “Sender (e-mail)”.</p>
+<p>Further note, that while you can use Advancedform_XH’s template system for Monorder_XH forms, you cannot use the hook system, as this is already used by Monorder_XH behind the scenes.</p>
+<p>If you want to keep a better overview of all orders, you can activate the “store data” option of the form. Note, that all orders made via this form will be stored in the same CSV file independent of the item. To sort that out you can temporarily import the CSV file to a spreadsheet software and use its capabilities.</p>
+<h3 id="item-preparation">Item preparation</h3>
+<p>For each item you want to offer you have to create a new record in the administration of Monorder_XH and you have to specify its available amount. Of course, you can adjust this amount anytime as appropriate. The name of the item is only for internal use, unless you have placed an order_item field on your form, in which case its value will be the name of the item. So it is sensible to use a speaking name, such as “Yellow CMSimple_XH T-shirt XL” or “CMSimple_XH seminar, 2014-03-21”.</p>
+<h3 id="displaying-the-form">Displaying the form</h3>
 <p>To display an order form on a page use the following plugin call:</p>
-<pre>{{{PLUGIN:Monorder_form('FORM_NAME', 'ITEM_NAME');}}}</pre>
-<p>where FORM_NAME is the name of the Advancedform_XH form, and ITEM_NAME is the
-name of the Monorder_XH item, e.g.:</p>
-<pre>{{{PLUGIN:Monorder_form('order', 'Yellow CMSimple_XH T-shirt XL');}}}</pre>
-<p>If there are items on stock the number is displayed above the form; otherwise
-there will be a message that there are no items available, and the form is not
-displayed at all.</p>
-<p>When a customer submits the form, the form validation will make sure that the
-number of order_amount items is on stock, and that the value of order_item has
-not been changed to something else; otherwise the email will not be sent. If
-everything is okay the email will be sent and the order_amount is subtracted
-from the stock.</p>
-<div class="toplink"><a href="#">back to top</a></div>
-
-<h3 id="usage-inventory">Inventory</h3>
-<p>If you like you can display the number of available items on other pages (for
-instance, on an overview page). Therefore use the following plugin call:</p>
-<pre>{{{PLUGIN:Monorder_inventory('ITEM_NAME');}}}</pre>
+<pre><code>{{{PLUGIN:Monorder_form(&#39;FORM_NAME&#39;, &#39;ITEM_NAME&#39;);}}}</code></pre>
+<p>where FORM_NAME is the name of the Advancedform_XH form, and ITEM_NAME is the name of the Monorder_XH item, e.g.:</p>
+<pre><code>{{{PLUGIN:Monorder_form(&#39;order&#39;, &#39;Yellow CMSimple_XH T-shirt XL&#39;);}}}</code></pre>
+<p>If there are items on stock the number is displayed above the form; otherwise there will be a message that there are no items available, and the form is not displayed at all.</p>
+<p>When a customer submits the form, the form validation will make sure that the number of order_amount items is on stock, and that the value of order_item has not been changed to something else; otherwise the email will not be sent. If everything is okay the email will be sent and the order_amount is subtracted from the stock.</p>
+<h3 id="inventory">Inventory</h3>
+<p>If you like you can display the number of available items on other pages (for instance, on an overview page). Therefore use the following plugin call:</p>
+<pre><code>{{{PLUGIN:Monorder_inventory(&#39;ITEM_NAME&#39;);}}}</code></pre>
 <p>Example:</p>
-<pre>{{{PLUGIN:Monorder_inventory('Yellow CMSimple_XH T-shirt XL');}}}</pre>
-<div class="toplink"><a href="#">back to top</a></div>
-
-<!--<h2><a name="limitations">Limitations</a></h2>
-<div class="toplink"><a href="#">back to top</a></div>
--->
-
+<pre><code>{{{PLUGIN:Monorder_inventory(&#39;Yellow CMSimple_XH T-shirt XL&#39;);}}}</code></pre>
 <h2 id="license">License</h2>
-<p>Monorder_XH is licensed under <a
-href="http://www.gnu.org/licenses/gpl.html">GPLv3</a>.</p>
-<p>&copy; 2014-2019 Christoph M. Becker</p>
-<div class="toplink"><a href="#">back to top</a></div>
-
+<p>Monorder_XH is licensed under <a href="http://www.gnu.org/licenses/gpl.html">GPLv3</a>.</p>
+<p>Copyright 2014-2019 Christoph M. Becker</p>
 <h2 id="credits">Credits</h2>
 <p>The plugin was inspired by Simmyne.</p>
-<p>The plugin icon is designed by <a
-href="http://www.freeiconsdownload.com/">Matt</a>. Many thanks for
-publishing this icon under a liberal license.</p>
-<p>This plugin uses free applications icons from <a
-href="http://www.aha-soft.com/">Aha-Soft</a>. Many thanks for making these icons
-freely available.</p>
-<p>Many thanks to the community at the <a
-href="http://www.cmsimpleforum.com/">CMSimple_XH forum</a> for tips, suggestions
-and testing.</p>
-<p>And last but not least many thanks to <a href="http://harteg.dk/">Peter
-Harteg</a>, the "father" of CMSimple, and all developers of <a
-href="http://www.cmsimple-xh.org/">CMSimple_XH</a> without whom this amazing
-CMS wouldn't exist.</p>
-<div class="toplink"><a href="#">back to top</a></div>
-
-</div>
-
+<p>The plugin icon is designed by <a href="http://www.freeiconsdownload.com/">Matt</a>. Many thanks for publishing this icon under a liberal license.</p>
+<p>This plugin uses free applications icons from <a href="http://www.aha-soft.com/">Aha-Soft</a>. Many thanks for making these icons freely available.</p>
+<p>Many thanks to the community at the <a href="http://www.cmsimpleforum.com/">CMSimple_XH forum</a> for tips, suggestions and testing.</p>
+<p>And last but not least many thanks to <a href="http://harteg.dk/">Peter Harteg</a>, the “father” of CMSimple, and all developers of <a href="http://www.cmsimple-xh.org/">CMSimple_XH</a> without whom this amazing CMS wouldn’t exist.</p>
 </body>
-
 </html>
