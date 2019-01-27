@@ -2,7 +2,7 @@
 
 <!-- $Id$ -->
 
-<project name="Monorder" default="default">
+<project name="Monorder" default="help">
 
     <!-- Filesets -->
 
@@ -11,6 +11,11 @@
         <include name="index.php"/>
         <include name="classes/*.php"/>
     </fileset>
+
+    <target name="help" description="lists available targets">
+        <exec command="phing -l" outputProperty="help"/>
+        <echo>${help}</echo>
+    </target>
 
     <!-- Checks -->
 
