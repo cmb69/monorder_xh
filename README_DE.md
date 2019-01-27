@@ -22,6 +22,7 @@ Verwendung von Advancedform\_XHs Hook-System für maßgeschneiderte
 Plugins.
 
   - [Voraussetzungen](#voraussetzungen)
+  - [Download](#download)
   - [Installation](#installation)
   - [Einstellungen](#einstellungen)
   - [Verwendung](#verwendung)
@@ -29,6 +30,7 @@ Plugins.
       - [Vorbereitung der Posten](#vorbereitung-der-posten)
       - [Anzeige des Formulars](#anzeige-des-formulars)
       - [Bestandsanzeige](#bestandsanzeige)
+  - [Fehlerbehebung](#fehlerbehebung)
   - [Lizenz](#lizenz)
   - [Danksagung](#danksagung)
 
@@ -36,6 +38,10 @@ Plugins.
 
 Monorder\_XH ist ein Plugin für CMSimple\_XH ≥ 1.5.4,
 PHP ≥ 5.1 und Advancedform\_XH.
+
+## Download
+
+Das [aktuelle Release](https://github.com/cmb69/monorder_xh/releases/latest) kann von Github herunter geladen werden.
 
 ## Installation
 
@@ -160,10 +166,26 @@ Beispiel:
 
     {{{PLUGIN:Monorder_inventory('Gelbes CMSimple_XH T-Shirt XL');}}}
 
+## Fehlerbehebung
+
+Melden Sie Programmfehler und stellen Sie Supportanfragen entweder auf [Github](https://github.com/cmb69/monorder_xh/issues)
+oder im [CMSimple_XH Forum](https://cmsimpleforum.com/).
+
 ## Lizenz
 
-Monorder\_XH kann unter Einhaltung der
-[GPLv3](http://www.gnu.org/licenses/gpl.html) verwendet werden.
+Monorder\_XH ist freie Software. Sie können es unter den Bedingungen
+der GNU General Public License, wie von der Free Software Foundation
+veröffentlicht, weitergeben und/oder modifizieren, entweder gemäß
+Version 3 der Lizenz oder (nach Ihrer Option) jeder späteren Version.
+
+Die Veröffentlichung von Monorder\_XH erfolgt in der Hoffnung, daß es
+Ihnen von Nutzen sein wird, aber *ohne irgendeine Garantie*, sogar ohne
+die implizite Garantie der *Marktreife* oder der *Verwendbarkeit für einen
+bestimmten Zweck*. Details finden Sie in der GNU General Public License.
+
+Sie sollten ein Exemplar der GNU General Public License zusammen mit
+Monorder\_XH erhalten haben. Falls nicht, siehe
+<http://www.gnu.org/licenses/>.
 
 Copyright 2014-2019 Christoph M. Becker
 
