@@ -1,8 +1,10 @@
 <?php
 
-require_once 'vfsStream/vfsStream.php';
-
 require_once './classes/Model.php';
+
+use org\bovigo\vfs\vfsStreamWrapper;
+use org\bovigo\vfs\vfsStreamDirectory;
+use org\bovigo\vfs\vfsStream;
 
 class ModelTest extends PHPUnit_Framework_TestCase
 {
@@ -14,7 +16,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
 
         vfsStreamWrapper::register();
         vfsStreamWrapper::setRoot(new vfsStreamDirectory('plugins'));
-        runkit_function_redefine('ftruncate', '$s, $p', '');
+        uopz_set_return('ftruncate', null);
         $pth['folder']['plugins'] = vfsStream::url('plugins/');
         $this->_subject = new Monorder_Model();
     }
