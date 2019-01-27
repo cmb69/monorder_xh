@@ -19,20 +19,20 @@
 
     <!-- Checks -->
 
-    <target name="sniff">
+    <target name="sniff" description="checks adherence to coding standards">
         <phpcodesniffer standard="PEAR" format="full">
             <fileset refid="php-sources"/>
         </phpcodesniffer>
     </target>
 
-    <target name="compat">
+    <target name="compat" description="checks compatibility with PHP CompatInfo">
         <exec command="phpcompatinfo --configuration phpcompatinfo.xml print --exclude-pattern monorder ."
               logoutput="true"/>
     </target>
 
     <!-- Tests -->
 
-    <target name="unit-tests">
+    <target name="unit-tests" description="runs all unit tests">
         <phpunit haltonerror="true" haltonfailure="true">
             <formatter type="plain" usefile="false"/>
             <batchtest>
@@ -43,7 +43,7 @@
         </phpunit>
     </target>
 
-    <target name="attack-tests">
+    <target name="attack-tests" description="runs all attack tests">
         <fail unless="env.CMSIMPLEDIR" message="CMSIMPLEDIR undefined!"/>
         <phpunit haltonerror="true" haltonfailure="true">
             <formatter type="plain" usefile="false"/>
@@ -57,13 +57,13 @@
 
     <!-- Code coverage -->
 
-    <target name="coverage">
+    <target name="coverage" description="generates coverage report">
         <exec command="phpunit --configuration coverage.xml" logoutput="true"/>
     </target>
 
     <!-- Build -->
 
-    <target name="build">
+    <target name="build" description="builds distributable ZIP archive">
         <fail unless="version" message="version is not defined!"/>
         <exec command="git archive -o export.zip HEAD" checkreturn="true"/>
         <unzip file="export.zip" todir="export"/>
