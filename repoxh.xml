@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+
+<!DOCTYPE plugin [
+	<!ELEMENT plugin (name,date_update,version,date_version,coder,tags,url,compatibility,php_ver,license,descriptions,screenshots,logo) >
+		<!ELEMENT url (download_url,coder_url,demo_url) >
+		<!ELEMENT descriptions (description+) >
+		<!ELEMENT screenshots (screenshot*) >
+		
+		<!ELEMENT name				(#PCDATA) >
+		<!ELEMENT date_update		(#PCDATA) >
+		<!ELEMENT version			(#PCDATA) >
+		<!ELEMENT date_version		(#PCDATA) >
+		<!ELEMENT coder				(#PCDATA) >
+		<!ELEMENT tags				(#PCDATA) >
+		<!ELEMENT compatibility		(#PCDATA) >
+		<!ELEMENT php_ver			(#PCDATA) >
+		<!ELEMENT license			(#PCDATA) >
+		<!ELEMENT logo				(#PCDATA) >
+		
+		<!ELEMENT download_url		(#PCDATA) >
+		<!ELEMENT coder_url			(#PCDATA) >
+		<!ELEMENT demo_url			(#PCDATA) >
+		<!ELEMENT description		(#PCDATA|br|ol|ul|li|i|b)* >
+		<!ELEMENT screenshot		(#PCDATA) >
+		
+		<!ATTLIST plugin version CDATA	#REQUIRED >
+		<!ATTLIST description lang NMTOKEN	#REQUIRED >
+		<!ATTLIST screenshot view CDATA		#REQUIRED >
+]>
+
+<!-- !!! Do note change the DTD !!! -->
+<!--
+	To avoid the error, the special characters must be written as an entity reference !!!
+	Um den Fehler zu vermeiden müssen die Sonderzeichen als Entitätsreferenz geschrieben werden !!!
+		&lt; 		-> 		< 
+		&gt; 		-> 		> 
+		&amp; 		-> 		& 
+		&apos; 		-> 		' 
+		&quot; 		-> 		" 
+-->
+
+<!-- You can test this xml on http://xmlgrid.net/ or https://www.freeformatter.com/xml-validator-xsd.html -->
+
+<!-- Do note change the Element plugin! -->
+<plugin version="1.0">
+	<!-- the name of the Plugin -->
+	<name>Monorder_XH</name>
+	<!-- Date this file was updated, yyyy.mm.dd -->
+	<date_update>2019.01.30</date_update>
+	<!-- version of Plugin -->
+	<version>1.1</version>
+	<!-- date of publication, yyyy.mm.dd -->
+	<date_version>2019.01.24</date_version>
+	<!-- the name of the programmer -->
+	<coder>Christoph M. Becker</coder>
+	<!-- Categories must be written in lower case. More than one possible, separated by comma without spaces. -->
+	<!-- Plugin Categories, i.e. audio,video,datenschutz,socialmdia,system,admin,backup,calendar.  -->
+	<!-- Template Categories, i.e. cssonly,onepage. -->
+	<!-- All available categories can be found on the website. -->
+	<tags></tags>
+	<!-- full URLs with http(s) -->
+	<url>
+		<!-- URL where you can download the plugin -->
+		<!-- If there no Download-URL, enter this das follows - <download_url></download_url> -->
+		<download_url>https://github.com/cmb69/monorder_xh/releases/latest</download_url>
+		<!-- URL of the programmer's website -->
+		<!-- If there no Website, enter this das follows - <coder_url></coder_url> -->
+		<coder_url>http://3-magi.net</coder_url>
+		<!-- URL where find a demo -->
+		<!-- If there no Demo-Website, enter this das follows - <demo_url></demo_url> -->
+		<demo_url></demo_url>
+	</url>
+	<!-- compatibility with versions of XH, i.e. 1.6, 1.6.7 - 1.7.2, ... -->
+	<compatibility>1.5.4</compatibility>
+	<!-- minimum version of PHP that is required, i.e. 5.3, 5.6, 7, ... -->
+	<!-- If there no specification, e.g. for templates, enter this das follows - <php_ver></php_ver> -->
+	<php_ver>5.1</php_ver>
+	<!-- the License for the Plugin, GPLv3, AGPL, LGPL, GPLv2 ... -->
+	<license>GPLv3</license>
+	<!-- Description in English is mandatory -->
+	<descriptions>
+		<!-- description of the plugin, ca. 200 characters, you can use <br/>, <ol></ol>, <ul></ul>, <li></li>, <b></b>, <i></i>. -->
+		<description lang="en">Monorder_XH facilitates placing order or reservation forms for single items resp. events on your website. The forms have to be created with Advancedform_XH.</description>
+		<!-- Beschreibung des Plugins, ca. 200 Zeichen, es können <br/>, <ol></ol>, <ul></ul>, <li></li>, <b></b>, <i></i> genutzt werden. -->
+		<description lang="de">Monorder_XH ermöglicht die Platzierung von Bestell- oder Reservierungsformularen für einzelne Posten bzw. Veranstaltungen auf Ihrer Website. Die Formulare müssen mit Advancedform_XH erstellt werden.</description>
+		<!-- additional languages are possible, i.e. da, fr, pl, ... -->
+		<!-- The use of this language is limited by the website where the repository is hosted. -->
+	</descriptions>
+	<!-- If there no screenshots, enter this das follows - <screenshots></screenshots> -->
+	<screenshots></screenshots>
+	<!-- , use only .jpg or .png -->
+	<!-- If there no logo, enter this das follows - <logo></logo> -->
+	<logo>https://raw.githubusercontent.com/cmb69/monorder_xh/master/monorder.png</logo>
+</plugin>
